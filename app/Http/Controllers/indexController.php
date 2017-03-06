@@ -10,7 +10,8 @@ class indexController extends Controller{
 	 * 项目首页
 	 */
 	public function index(){
-		
-		return view('index/index',array('title'=>'主页'));
+	    //查找出所有的function信息
+	    $list = \App\Models\FunctionList::select('id','functionName','functionAddress')->get();
+	    return view('index/index',array('title'=>'主页'),array('list'=>$list));
 	}
 }
