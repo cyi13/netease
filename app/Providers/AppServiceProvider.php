@@ -12,8 +12,9 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
-        //
+    {   
+        //网站标题
+        view()->share('netTitle','FUNCTION');
     }
 
     /**

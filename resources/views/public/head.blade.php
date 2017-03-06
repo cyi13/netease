@@ -16,7 +16,7 @@
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link href="{{asset('/css/index/index.css')}}" rel="stylesheet">
+    <link href="{{asset('/css/common/index.css')}}" rel="stylesheet">
     {{-- css区域 --}}
     @yield('css')
   </head>
@@ -26,7 +26,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h1>FUNCTION</h1>
-            <p>个人制作的一些小工具，仅供学习使用<br></p>
+            <p>一些小工具，仅供学习使用<br></p><br/><br/>
             <form class="" role="search">
               <div class="form-group">
                 <input type="text" class="form-control search clearable" placeholder="搜索工具名称，如：计算器">
