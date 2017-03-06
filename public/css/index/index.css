@@ -1,39 +1,12 @@
-.site-header {
-  position: relative;
-  text-align: center;
-  background-color: #006699;
-  color: #fff;
-  margin-bottom: 0;
+table{
+	margin-top:1rem;
 }
-.site-header h1 {
-  font-size: 56px;
-  text-shadow: -5px 5px 0 rgba(0,0,0,0.1);
+table td,table th{
+	padding: 1.3rem !important;
 }
-.site-header p {
-  color: #f4f4f4;
+table th{
+	font-size:2rem;
 }
-.jumbotron p {
-  margin-bottom: 15px;
-  font-size: 21px;
-  font-weight: 200;
-}
-.site-header span {
-  font-size: 14px;
-}
-.site-header .search {
-  border: 2px solid #27AE60;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  font-size: 16px;
-  padding: 13px 30px;
-  border-radius: 0;
-  height: auto;
-  text-align: center;
-  }
-.site-header .fa {
-  position: absolute;
-  right: 25px;
-  bottom: 30px;
-  color: #eee;
-  font-size: 24px;
+table tr{
+	font-size:1.6rem;
 }
