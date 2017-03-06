@@ -10,6 +10,7 @@ class CrawlersController extends Controller
     public function __construct(CrawlersInterface $crawlers){
         $this->craws = $crawlers;
     }
+    
     public function cloudMusic(){
         $this->craws->getMusicList();
     }

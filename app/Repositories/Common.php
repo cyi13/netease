@@ -41,6 +41,30 @@ class Common {
         //关闭
         curl_close($ch);
         //返回内容
-        return !empty($result) ? htmlspecialchars($result) : null;
+        return $result;
+        // return !empty($result) ? htmlspecialchars($result) : null;
+    }
+
+    /**
+     * 正则匹配
+     * @param  string $rule   正则表达式
+     * @param  string $string 字符串内容
+     * @return array          有匹配返回一个结果数组 否则返回空
+     */
+    public function pregMathAll($rule,$string){
+
+        if(empty($rule) && empty($string)){
+            return null;
+        }
+
+        preg_match_all($rule, $string, $list);
+        //使用第二个结果
+        if(!empty($list[1])){
+            unset($list[0]);
+            return $list;
+        }else{
+            return null;
+        }
+
     }
 }

@@ -13,7 +13,7 @@ class CreateFunctionListTable extends Migration
      */
     public function up()
     {
-            Schema::create('fun_function_list',function(Blueprint $table){
+            Schema::create('function_list',function(Blueprint $table){
                 //存储引擎
                 $table->engine = "InnoDB";
                 //自增长Id
@@ -33,6 +33,6 @@ class CreateFunctionListTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fun_function_list');
+        Schema::dropIfExists('function_list');
     }
 }
