@@ -111,6 +111,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         }
         //歌单表模型
         $PlayListModel = new \App\Models\CloudPlayList;
+        $executeNum = 0;
         foreach ($list as $key => $value) {
 
             $url = $value['link'];
@@ -158,9 +159,14 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                                   'listImg'      =>$imgList[$k],
                                   'link'         =>$this->cloudMusicDomain.$hrefList[$k],
                                   'parentCateId' =>$value['cateId']);
-                    $createResult = $PlayListModel->create($data);
+                    // 先放到txt文件里面
+                    file_put_contents('playlist.txt', $data,FILE_APPEND);
+                    // $createResult = $PlayListModel->firstOrCreate($data);
+                    // $executeNum++;
                 }
-                die;
+                if($executeNum % 10 == 0){
+                    sleep(rand(1,5));
+                }
             }
         }
     }
