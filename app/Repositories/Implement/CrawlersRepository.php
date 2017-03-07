@@ -137,7 +137,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                     break;
                 }
                 //开始抓取
-                $rule = '|<img class="j-flag" src="(.*)"\/>\n<a title="(.*)" href="(.*)"[\s\S]*?data-res-id="(.*)"[\s\S]*?<span class="nb">(.*)<\/span>|';
+                $rule = '|<img class="j-flag" src="(.*)"\/>\n<a title="(.*)" href="(.*)" class="msk">[\s\S]*?data-res-id="(.*)"[\s\S]*?<span class="nb">(.*)<\/span>|';
                 $pageList = $this->pregMathAll($rule,$res);
                 if(!empty($res)){
                     //歌单图片
@@ -160,6 +160,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                                   'parentCateId' =>$value['cateId']);
                     $createResult = $PlayListModel->create($data);
                 }
+                die;
             }
         }
     }
