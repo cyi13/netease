@@ -12,7 +12,8 @@ class CreateFunctionListTable extends Migration
      * @return void
      */
     public function up()
-    {
+    {   
+        if(!Schema::hasTable('function_list')){
             Schema::create('function_list',function(Blueprint $table){
                 //存储引擎
                 $table->engine = "InnoDB";
@@ -24,6 +25,7 @@ class CreateFunctionListTable extends Migration
                 //默认添加create_at和update_at 列
                 $table->timestamps();
             });
+        }
     }
 
     /**

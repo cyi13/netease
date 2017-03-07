@@ -60,7 +60,7 @@ class Common {
         preg_match_all($rule, $string, $list);
         //使用第二个结果
         if(!empty($list[1])){
-            unset($list[0]);
+            array_shift($list);
             return $list;
         }else{
             return null;

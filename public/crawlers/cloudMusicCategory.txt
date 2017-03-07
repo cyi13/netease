@@ -215,7 +215,7 @@ top.scrollTopbar(Math.max(document.body.scrollTop, document.documentElement.scro
 })();</script>
 <base href="//music.163.com/" target="_top">
 <link rel="shortcut icon" href="//s1.music.126.net/music.ico?v1" />
-<link href="//s2.music.126.net/sep/s/2/core.css?0696aea5830dd92f476ce93fd63ec210" type="text/css" rel="stylesheet"/><link href="//s2.music.126.net/sep/s/2/pt_frame.css?1aceade440445037d687cfdb3ed02ff9" type="text/css" rel="stylesheet"/>
+<link href="//s2.music.126.net/sep/s/2/core.css?99a650985e725d329807f8f4c7ba1f90" type="text/css" rel="stylesheet"/><link href="//s2.music.126.net/sep/s/2/pt_frame.css?53b6ffeb616a0391272c85c0014a8a06" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <div data-module="discover" data-sub="playlist" id="g_top" class="m-top">&nbsp;</div>
@@ -342,119 +342,119 @@ top.matchNav("discover", "playlist");
 <ul class="m-cvrlst f-cb" id="m-pl-container">
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/r4ATsSMVqY5_LTxnHxL5vQ==/19082024300066596.jpg?param=140y140"/>
-<a title="娱乐圈的那些甜美爱情才令人向往" href="/playlist?id=605805203" class="msk"></a>
+<img class="j-flag" src="http://p1.music.126.net/dAM7nB4IjBlrj7tvqhYVMw==/109951162869921971.jpg?param=140y140"/>
+<a title="中国内地男团，刚柔并济的美男们" href="/playlist?id=618047138" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
 data-res-type="13"
-data-res-id="605805203"
+data-res-id="618047138"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">29万</span>
+<span class="nb">28478</span>
 </div>
 </div>
 <p class="dec">
-<a title="娱乐圈的那些甜美爱情才令人向往" href="/playlist?id=605805203" class="tit f-thide s-fc0">娱乐圈的那些甜美爱情才令人向往</a>
+<a title="中国内地男团，刚柔并济的美男们" href="/playlist?id=618047138" class="tit f-thide s-fc0">中国内地男团，刚柔并济的美男们</a>
 </p>
-<p><span class="s-fc4">by</span> <a title="花妖阿" href="/user/home?id=68778828" class="nm nm-icn f-thide s-fc3">花妖阿</a> <sup class="u-icn u-icn-84 "></sup>
+<p><span class="s-fc4">by</span> <a title="LalisaManoban" href="/user/home?id=75287303" class="nm nm-icn f-thide s-fc3">LalisaManoban</a> <sup class="u-icn u-icn-84 "></sup>
 </p>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/y6iatcUNFjwnX9wYKulIUg==/18596040162406708.jpg?param=140y140"/>
-<a title="『复古流行』新旧冲撞，永不过时" href="/playlist?id=618313249" class="msk"></a>
+<img class="j-flag" src="http://p1.music.126.net/pgn_nzakYrRKsmvpNg9i9g==/1413971958149394.jpg?param=140y140"/>
+<a title="『虚拟』那些现如今精彩绝伦的单机游戏" href="/playlist?id=450806120" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
 data-res-type="13"
-data-res-id="618313249"
+data-res-id="450806120"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">90584</span>
+<span class="nb">50402</span>
 </div>
 </div>
 <p class="dec">
-<a title="『复古流行』新旧冲撞，永不过时" href="/playlist?id=618313249" class="tit f-thide s-fc0">『复古流行』新旧冲撞，永不过时</a>
+<a title="『虚拟』那些现如今精彩绝伦的单机游戏" href="/playlist?id=450806120" class="tit f-thide s-fc0">『虚拟』那些现如今精彩绝伦的单机游戏</a>
 </p>
-<p><span class="s-fc4">by</span> <a title="凯蒂肥狸" href="/user/home?id=31223718" class="nm nm-icn f-thide s-fc3">凯蒂肥狸</a> <sup class="u-icn u-icn-84 "></sup>
+<p><span class="s-fc4">by</span> <a title="Zedd_Jannina" href="/user/home?id=106567117" class="nm nm-icn f-thide s-fc3">Zedd_Jannina</a> <sup class="u-icn u-icn-84 "></sup>
 </p>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/d4WY8NQG6levJFXE_RO9hQ==/18756568860058594.jpg?param=140y140"/>
-<a title="R3HAB Relax Playlist" href="/playlist?id=619180005" class="msk"></a>
+<img class="j-flag" src="http://p1.music.126.net/97j30DaXSLfvFUBTonlfEw==/1417270498256444.jpg?param=140y140"/>
+<a title="「春の呢喃」欢愉，舒逸，轻抚内心" href="/playlist?id=379951803" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
 data-res-type="13"
-data-res-id="619180005"
+data-res-id="379951803"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">93696</span>
+<span class="nb">42427</span>
 </div>
 </div>
 <p class="dec">
-<a title="R3HAB Relax Playlist" href="/playlist?id=619180005" class="tit f-thide s-fc0">R3HAB Relax Playlist</a>
+<a title="「春の呢喃」欢愉，舒逸，轻抚内心" href="/playlist?id=379951803" class="tit f-thide s-fc0">「春の呢喃」欢愉，舒逸，轻抚内心</a>
 </p>
-<p><span class="s-fc4">by</span> <a title="DJ_R3HAB" href="/user/home?id=403168139" class="nm nm-icn f-thide s-fc3">DJ_R3HAB</a> <sup class="u-icn u-icn-1 "></sup>
+<p><span class="s-fc4">by</span> <a title="焦月Zzz" href="/user/home?id=87754254" class="nm nm-icn f-thide s-fc3">焦月Zzz</a> </p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/8i7U4f-9Hkt-qICQYt6pvw==/19213965695394851.jpg?param=140y140"/>
+<a title="石屎森林丨香港indie乐团篇" href="/playlist?id=118143056" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="118143056"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">20410</span>
+</div>
+</div>
+<p class="dec">
+<a title="石屎森林丨香港indie乐团篇" href="/playlist?id=118143056" class="tit f-thide s-fc0">石屎森林丨香港indie乐团篇</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="陈北及" href="/user/home?id=3432498" class="nm nm-icn f-thide s-fc3">陈北及</a> <sup class="u-icn u-icn-84 "></sup>
 </p>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/9Wbzh1owfZ1ZxoagdDb0kw==/18737877162388473.jpg?param=140y140"/>
-<a title="〖那些情有独钟的闽南语歌〗" href="/playlist?id=610982531" class="msk"></a>
+<img class="j-flag" src="http://p1.music.126.net/ZJyzaA6lCkVZZGhWeT8CCA==/18506979720556428.jpg?param=140y140"/>
+<a title="一代Diva一个时代 女帝称霸乐坛的那些年" href="/playlist?id=608404435" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
 data-res-type="13"
-data-res-id="610982531"
+data-res-id="608404435"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">76774</span>
+<span class="nb">16958</span>
 </div>
 </div>
 <p class="dec">
-<a title="〖那些情有独钟的闽南语歌〗" href="/playlist?id=610982531" class="tit f-thide s-fc0">〖那些情有独钟的闽南语歌〗</a>
+<a title="一代Diva一个时代 女帝称霸乐坛的那些年" href="/playlist?id=608404435" class="tit f-thide s-fc0">一代Diva一个时代 女帝称霸乐坛的那些年</a>
 </p>
-<p><span class="s-fc4">by</span> <a title="背了个影" href="/user/home?id=26852587" class="nm nm-icn f-thide s-fc3">背了个影</a> <sup class="u-icn u-icn-84 "></sup>
+<p><span class="s-fc4">by</span> <a title="特立独行的小怪兽啊" href="/user/home?id=82749883" class="nm nm-icn f-thide s-fc3">特立独行的小怪兽啊</a> <sup class="u-icn u-icn-84 "></sup>
 </p>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/pDIVZm1h0vYTKLU_-u9TLA==/19107313067507992.jpg?param=140y140"/>
-<a title="日系♥愿你的三月宛如自然的烂漫" href="/playlist?id=616713653" class="msk"></a>
+<img class="j-flag" src="http://p1.music.126.net/9uE5t9pF91t12HF-8rHXDA==/18535567022733608.jpg?param=140y140"/>
+<a title="『封面辑』音·画·之·美" href="/playlist?id=608677888" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
 data-res-type="13"
-data-res-id="616713653"
+data-res-id="608677888"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">63855</span>
+<span class="nb">20494</span>
 </div>
 </div>
 <p class="dec">
-<a title="日系♥愿你的三月宛如自然的烂漫" href="/playlist?id=616713653" class="tit f-thide s-fc0">日系♥愿你的三月宛如自然的烂漫</a>
+<a title="『封面辑』音·画·之·美" href="/playlist?id=608677888" class="tit f-thide s-fc0">『封面辑』音·画·之·美</a>
 </p>
-<p><span class="s-fc4">by</span> <a title="霓虹小知音" href="/user/home?id=360749303" class="nm nm-icn f-thide s-fc3">霓虹小知音</a> </p>
+<p><span class="s-fc4">by</span> <a title="EviscerateSoul" href="/user/home?id=348320529" class="nm nm-icn f-thide s-fc3">EviscerateSoul</a> </p>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/K4dlh2oBt43EYNqtTSCujg==/18577348464653257.jpg?param=140y140"/>
-<a title="『韩语』节奏劲爆‖抖腿取向" href="/playlist?id=582094576" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="582094576"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">10万</span>
-</div>
-</div>
-<p class="dec">
-<a title="『韩语』节奏劲爆‖抖腿取向" href="/playlist?id=582094576" class="tit f-thide s-fc0">『韩语』节奏劲爆‖抖腿取向</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="IRON防弹SWAG窝瓜" href="/user/home?id=74709542" class="nm nm-icn f-thide s-fc3">IRON防弹SWAG窝瓜</a> </p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/4sQlP3i_9I4seMLlgqjROQ==/18886311230318609.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/4sQlP3i_9I4seMLlgqjROQ==/18886311230318609.jpg?param=140y140"/>
 <a title="香港金牌作曲人第二辑｜如果没有雷颂德" href="/playlist?id=615218978" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -462,7 +462,7 @@ data-res-type="13"
 data-res-id="615218978"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">31万</span>
+<span class="nb">35万</span>
 </div>
 </div>
 <p class="dec">
@@ -472,174 +472,7 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/YSkvvsdVCrE2wGHvf29TqA==/19035844811690231.jpg?param=140y140"/>
-<a title="100位日本女歌手唱英文歌：穿和服的姑娘" href="/playlist?id=614254161" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="614254161"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">52万</span>
-</div>
-</div>
-<p class="dec">
-<a title="100位日本女歌手唱英文歌：穿和服的姑娘" href="/playlist?id=614254161" class="tit f-thide s-fc0">100位日本女歌手唱英文歌：穿和服的姑娘</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="第十三个神" href="/user/home?id=92582150" class="nm nm-icn f-thide s-fc3">第十三个神</a> </p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/Z0_Rrw0P9ZOiqtRyaQMY7g==/19106213555874906.jpg?param=140y140"/>
-<a title="R3HAB Party Playlist" href="/playlist?id=618111837" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="618111837"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">79万</span>
-</div>
-</div>
-<p class="dec">
-<a title="R3HAB Party Playlist" href="/playlist?id=618111837" class="tit f-thide s-fc0">R3HAB Party Playlist</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="DJ_R3HAB" href="/user/home?id=403168139" class="nm nm-icn f-thide s-fc3">DJ_R3HAB</a> <sup class="u-icn u-icn-1 "></sup>
-</p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/VxGIkljaTdEb9mMvYcnL9w==/109951162867823512.jpg?param=140y140"/>
-<a title="【华语】你说你要牵我的手去流浪" href="/playlist?id=614621665" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="614621665"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">129万</span>
-</div>
-</div>
-<p class="dec">
-<a title="【华语】你说你要牵我的手去流浪" href="/playlist?id=614621665" class="tit f-thide s-fc0">【华语】你说你要牵我的手去流浪</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="贰拾柒_" href="/user/home?id=74953725" class="nm nm-icn f-thide s-fc3">贰拾柒_</a> </p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/w10d9Kag3yxR8BHHgVloQA==/109951162871435878.jpg?param=140y140"/>
-<a title="金刚狼3 BGM全收录" href="/playlist?id=619348154" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="619348154"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">112万</span>
-</div>
-</div>
-<p class="dec">
-<a title="金刚狼3 BGM全收录" href="/playlist?id=619348154" class="tit f-thide s-fc0">金刚狼3 BGM全收录</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="掌柜阿峻" href="/user/home?id=783819" class="nm nm-icn f-thide s-fc3">掌柜阿峻</a> <sup class="u-icn u-icn-1 "></sup>
-</p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/_ypY9EyS95h8f_VLf2SOGg==/109951162867814935.jpg?param=140y140"/>
-<a title="别让时光偷走你上扬的嘴角" href="/playlist?id=614636293" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="614636293"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">284万</span>
-</div>
-</div>
-<p class="dec">
-<a title="别让时光偷走你上扬的嘴角" href="/playlist?id=614636293" class="tit f-thide s-fc0">别让时光偷走你上扬的嘴角</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="治愈兔" href="/user/home?id=251000367" class="nm nm-icn f-thide s-fc3">治愈兔</a> <sup class="u-icn u-icn-84 "></sup>
-</p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/yuJpYsdRi0txgyRrn3jpTg==/18574049929851353.jpg?param=140y140"/>
-<a title="【韩语】盘点那些唱作俱佳的爱豆" href="/playlist?id=618364639" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="618364639"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">21万</span>
-</div>
-</div>
-<p class="dec">
-<a title="【韩语】盘点那些唱作俱佳的爱豆" href="/playlist?id=618364639" class="tit f-thide s-fc0">【韩语】盘点那些唱作俱佳的爱豆</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="Sweet_bam" href="/user/home?id=99285681" class="nm nm-icn f-thide s-fc3">Sweet_bam</a> <sup class="u-icn u-icn-84 "></sup>
-</p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/DqMQbs4-vzhj0fGz9rWZEQ==/19243652509345128.jpg?param=140y140"/>
-<a title="[韩语]春日恋歌♬花，风，还有你" href="/playlist?id=617976506" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="617976506"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">38万</span>
-</div>
-</div>
-<p class="dec">
-<a title="[韩语]春日恋歌♬花，风，还有你" href="/playlist?id=617976506" class="tit f-thide s-fc0">[韩语]春日恋歌♬花，风，还有你</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="叫我斯斯欧尼" href="/user/home?id=135786413" class="nm nm-icn f-thide s-fc3">叫我斯斯欧尼</a> <sup class="u-icn u-icn-84 "></sup>
-</p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/ia34Zlyxiz2xX_H0191uHA==/109951162869299569.jpg?param=140y140"/>
-<a title="将天空染色|最炫美的电音风格|Midtempo" href="/playlist?id=617021092" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="617021092"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">22万</span>
-</div>
-</div>
-<p class="dec">
-<a title="将天空染色|最炫美的电音风格|Midtempo" href="/playlist?id=617021092" class="tit f-thide s-fc0">将天空染色|最炫美的电音风格|Midtempo</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="WynnTheDays" href="/user/home?id=63157581" class="nm nm-icn f-thide s-fc3">WynnTheDays</a> </p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/VBmZWIGowmc92M6cD4ji6w==/18788454697257736.jpg?param=140y140"/>
-<a title="一缕清风 迎面吹 营造清新感" href="/playlist?id=620370774" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="620370774"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">13万</span>
-</div>
-</div>
-<p class="dec">
-<a title="一缕清风 迎面吹 营造清新感" href="/playlist?id=620370774" class="tit f-thide s-fc0">一缕清风 迎面吹 营造清新感</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="LoveSoliloquy" href="/user/home?id=67455068" class="nm nm-icn f-thide s-fc3">LoveSoliloquy</a> </p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/kxuhGj0TrSeZC5ks4f2nkA==/109951162872026694.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/kxuhGj0TrSeZC5ks4f2nkA==/109951162872026694.jpg?param=140y140"/>
 <a title="【日系】你的温柔，是我不可替代的宝物" href="/playlist?id=615937693" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -647,7 +480,7 @@ data-res-type="13"
 data-res-id="615937693"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">12万</span>
+<span class="nb">15万</span>
 </div>
 </div>
 <p class="dec">
@@ -658,45 +491,155 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/EPHGotzrplUzf3iDydzSUA==/109951162869754890.jpg?param=140y140"/>
-<a title="【粤语】男声翻唱男歌，重温港坛经典" href="/playlist?id=614996836" class="msk"></a>
+<img class="j-flag" src="http://p1.music.126.net/w10d9Kag3yxR8BHHgVloQA==/109951162871435878.jpg?param=140y140"/>
+<a title="金刚狼3 BGM全收录" href="/playlist?id=619348154" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
 data-res-type="13"
-data-res-id="614996836"
+data-res-id="619348154"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">115万</span>
+<span class="nb">140万</span>
 </div>
 </div>
 <p class="dec">
-<a title="【粤语】男声翻唱男歌，重温港坛经典" href="/playlist?id=614996836" class="tit f-thide s-fc0">【粤语】男声翻唱男歌，重温港坛经典</a>
+<a title="金刚狼3 BGM全收录" href="/playlist?id=619348154" class="tit f-thide s-fc0">金刚狼3 BGM全收录</a>
 </p>
-<p><span class="s-fc4">by</span> <a title="刘宽-" href="/user/home?id=1580117" class="nm nm-icn f-thide s-fc3">刘宽-</a> <sup class="u-icn u-icn-84 "></sup>
+<p><span class="s-fc4">by</span> <a title="掌柜阿峻" href="/user/home?id=783819" class="nm nm-icn f-thide s-fc3">掌柜阿峻</a> <sup class="u-icn u-icn-1 "></sup>
 </p>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/FO1M2CVTgy-L35WFOLrapg==/18934689741935610.jpg?param=140y140"/>
-<a title="韩语R&amp;Bㅣ深度迷幻，梦境开启的地方" href="/playlist?id=615284078" class="msk"></a>
+<img class="j-flag" src="http://p1.music.126.net/derl0HHi49WZsJfDHURRhQ==/18784056650747552.jpg?param=140y140"/>
+<a title="在这薄情世界里用深情吟唱的那些诗人" href="/playlist?id=620219119" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
 data-res-type="13"
-data-res-id="615284078"
+data-res-id="620219119"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">33万</span>
+<span class="nb">250万</span>
 </div>
 </div>
 <p class="dec">
-<a title="韩语R&amp;Bㅣ深度迷幻，梦境开启的地方" href="/playlist?id=615284078" class="tit f-thide s-fc0">韩语R&amp;Bㅣ深度迷幻，梦境开启的地方</a>
+<a title="在这薄情世界里用深情吟唱的那些诗人" href="/playlist?id=620219119" class="tit f-thide s-fc0">在这薄情世界里用深情吟唱的那些诗人</a>
 </p>
-<p><span class="s-fc4">by</span> <a title="LalisaManoban" href="/user/home?id=75287303" class="nm nm-icn f-thide s-fc3">LalisaManoban</a> <sup class="u-icn u-icn-84 "></sup>
+<p><span class="s-fc4">by</span> <a title="______草泥马一" href="/user/home?id=325479710" class="nm nm-icn f-thide s-fc3">______草泥马一</a> </p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/d4WY8NQG6levJFXE_RO9hQ==/18756568860058594.jpg?param=140y140"/>
+<a title="R3HAB Relax Playlist" href="/playlist?id=619180005" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="619180005"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">22万</span>
+</div>
+</div>
+<p class="dec">
+<a title="R3HAB Relax Playlist" href="/playlist?id=619180005" class="tit f-thide s-fc0">R3HAB Relax Playlist</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="DJ_R3HAB" href="/user/home?id=403168139" class="nm nm-icn f-thide s-fc3">DJ_R3HAB</a> <sup class="u-icn u-icn-1 "></sup>
 </p>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/_Ds5ofaiVNwGLaT-QeEhrg==/109951162869565332.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/pDIVZm1h0vYTKLU_-u9TLA==/19107313067507992.jpg?param=140y140"/>
+<a title="日系♥愿你的三月宛如自然的烂漫" href="/playlist?id=616713653" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="616713653"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">10万</span>
+</div>
+</div>
+<p class="dec">
+<a title="日系♥愿你的三月宛如自然的烂漫" href="/playlist?id=616713653" class="tit f-thide s-fc0">日系♥愿你的三月宛如自然的烂漫</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="霓虹小知音" href="/user/home?id=360749303" class="nm nm-icn f-thide s-fc3">霓虹小知音</a> </p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/Z0_Rrw0P9ZOiqtRyaQMY7g==/19106213555874906.jpg?param=140y140"/>
+<a title="R3HAB Party Playlist" href="/playlist?id=618111837" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="618111837"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">81万</span>
+</div>
+</div>
+<p class="dec">
+<a title="R3HAB Party Playlist" href="/playlist?id=618111837" class="tit f-thide s-fc0">R3HAB Party Playlist</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="DJ_R3HAB" href="/user/home?id=403168139" class="nm nm-icn f-thide s-fc3">DJ_R3HAB</a> <sup class="u-icn u-icn-1 "></sup>
+</p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/ia34Zlyxiz2xX_H0191uHA==/109951162869299569.jpg?param=140y140"/>
+<a title="将天空染色|最炫美的电音风格|Midtempo" href="/playlist?id=617021092" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="617021092"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">24万</span>
+</div>
+</div>
+<p class="dec">
+<a title="将天空染色|最炫美的电音风格|Midtempo" href="/playlist?id=617021092" class="tit f-thide s-fc0">将天空染色|最炫美的电音风格|Midtempo</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="WynnTheDays" href="/user/home?id=63157581" class="nm nm-icn f-thide s-fc3">WynnTheDays</a> </p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/y6iatcUNFjwnX9wYKulIUg==/18596040162406708.jpg?param=140y140"/>
+<a title="『复古流行』新旧冲撞，永不过时" href="/playlist?id=618313249" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="618313249"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">11万</span>
+</div>
+</div>
+<p class="dec">
+<a title="『复古流行』新旧冲撞，永不过时" href="/playlist?id=618313249" class="tit f-thide s-fc0">『复古流行』新旧冲撞，永不过时</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="凯蒂肥狸" href="/user/home?id=31223718" class="nm nm-icn f-thide s-fc3">凯蒂肥狸</a> <sup class="u-icn u-icn-84 "></sup>
+</p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/VBmZWIGowmc92M6cD4ji6w==/18788454697257736.jpg?param=140y140"/>
+<a title="一缕清风 迎面吹 营造清新感" href="/playlist?id=620370774" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="620370774"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">15万</span>
+</div>
+</div>
+<p class="dec">
+<a title="一缕清风 迎面吹 营造清新感" href="/playlist?id=620370774" class="tit f-thide s-fc0">一缕清风 迎面吹 营造清新感</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="LoveSoliloquy" href="/user/home?id=67455068" class="nm nm-icn f-thide s-fc3">LoveSoliloquy</a> </p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/_Ds5ofaiVNwGLaT-QeEhrg==/109951162869565332.jpg?param=140y140"/>
 <a title="爱耳日特辑｜想把大自然播放给你听" href="/playlist?id=617454486" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -704,7 +647,7 @@ data-res-type="13"
 data-res-id="617454486"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">23万</span>
+<span class="nb">25万</span>
 </div>
 </div>
 <p class="dec">
@@ -715,7 +658,45 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/tQa8jnfoQz6MpUTX-mcokw==/109951162867120252.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/DqMQbs4-vzhj0fGz9rWZEQ==/19243652509345128.jpg?param=140y140"/>
+<a title="[韩语]春日恋歌♬花，风，还有你" href="/playlist?id=617976506" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="617976506"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">40万</span>
+</div>
+</div>
+<p class="dec">
+<a title="[韩语]春日恋歌♬花，风，还有你" href="/playlist?id=617976506" class="tit f-thide s-fc0">[韩语]春日恋歌♬花，风，还有你</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="叫我斯斯欧尼" href="/user/home?id=135786413" class="nm nm-icn f-thide s-fc3">叫我斯斯欧尼</a> <sup class="u-icn u-icn-84 "></sup>
+</p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/FO1M2CVTgy-L35WFOLrapg==/18934689741935610.jpg?param=140y140"/>
+<a title="韩语R&amp;Bㅣ深度迷幻，梦境开启的地方" href="/playlist?id=615284078" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="615284078"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">34万</span>
+</div>
+</div>
+<p class="dec">
+<a title="韩语R&amp;Bㅣ深度迷幻，梦境开启的地方" href="/playlist?id=615284078" class="tit f-thide s-fc0">韩语R&amp;Bㅣ深度迷幻，梦境开启的地方</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="LalisaManoban" href="/user/home?id=75287303" class="nm nm-icn f-thide s-fc3">LalisaManoban</a> <sup class="u-icn u-icn-84 "></sup>
+</p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/tQa8jnfoQz6MpUTX-mcokw==/109951162867120252.jpg?param=140y140"/>
 <a title="聆听华语里百听不厌R&amp;B" href="/playlist?id=613333730" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -723,7 +704,7 @@ data-res-type="13"
 data-res-id="613333730"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">401万</span>
+<span class="nb">409万</span>
 </div>
 </div>
 <p class="dec">
@@ -733,7 +714,7 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/hsAAWnWaYVaqNgy_gFXr8Q==/18629025511229507.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/hsAAWnWaYVaqNgy_gFXr8Q==/18629025511229507.jpg?param=140y140"/>
 <a title="流行电子X傲娇女毒,hold不住的新式反差萌~" href="/playlist?id=610219424" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -741,7 +722,7 @@ data-res-type="13"
 data-res-id="610219424"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">125万</span>
+<span class="nb">128万</span>
 </div>
 </div>
 <p class="dec">
@@ -752,7 +733,7 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/z9UavBh7if5ZKtQiVbHXjw==/19183179369815195.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/z9UavBh7if5ZKtQiVbHXjw==/19183179369815195.jpg?param=140y140"/>
 <a title="「琉璃声线」臻美百首精选Ⅲ 人声Mix" href="/playlist?id=609399925" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -760,7 +741,7 @@ data-res-type="13"
 data-res-id="609399925"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">42万</span>
+<span class="nb">45万</span>
 </div>
 </div>
 <p class="dec">
@@ -771,7 +752,44 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/ww4-q4eEXWinLhQS3Pc0Mg==/109951162871239159.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/YSkvvsdVCrE2wGHvf29TqA==/19035844811690231.jpg?param=140y140"/>
+<a title="100位日本女歌手唱英文歌：穿和服的姑娘" href="/playlist?id=614254161" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="614254161"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">54万</span>
+</div>
+</div>
+<p class="dec">
+<a title="100位日本女歌手唱英文歌：穿和服的姑娘" href="/playlist?id=614254161" class="tit f-thide s-fc0">100位日本女歌手唱英文歌：穿和服的姑娘</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="第十三个神" href="/user/home?id=92582150" class="nm nm-icn f-thide s-fc3">第十三个神</a> </p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/yuJpYsdRi0txgyRrn3jpTg==/18574049929851353.jpg?param=140y140"/>
+<a title="【韩语】盘点那些唱作俱佳的爱豆" href="/playlist?id=618364639" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="618364639"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">22万</span>
+</div>
+</div>
+<p class="dec">
+<a title="【韩语】盘点那些唱作俱佳的爱豆" href="/playlist?id=618364639" class="tit f-thide s-fc0">【韩语】盘点那些唱作俱佳的爱豆</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="Sweet_bam" href="/user/home?id=99285681" class="nm nm-icn f-thide s-fc3">Sweet_bam</a> <sup class="u-icn u-icn-84 "></sup>
+</p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/ww4-q4eEXWinLhQS3Pc0Mg==/109951162871239159.jpg?param=140y140"/>
 <a title="⚡️17年2月新热电音推送" href="/playlist?id=612963791" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -779,7 +797,7 @@ data-res-type="13"
 data-res-id="612963791"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">94万</span>
+<span class="nb">97万</span>
 </div>
 </div>
 <p class="dec">
@@ -790,26 +808,7 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/Ub27er7FoNu_9YSujnsiTw==/18590542604259165.jpg?param=140y140"/>
-<a title="柔情缱绻的女声，绵绵不绝的情思" href="/playlist?id=607138638" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="607138638"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">171万</span>
-</div>
-</div>
-<p class="dec">
-<a title="柔情缱绻的女声，绵绵不绝的情思" href="/playlist?id=607138638" class="tit f-thide s-fc0">柔情缱绻的女声，绵绵不绝的情思</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="xept" href="/user/home?id=74029445" class="nm nm-icn f-thide s-fc3">xept</a> <sup class="u-icn u-icn-84 "></sup>
-</p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/iLVwxv77iGtEt0CWXZongQ==/109951162864276441.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/iLVwxv77iGtEt0CWXZongQ==/109951162864276441.jpg?param=140y140"/>
 <a title="怕是要来首战歌咯" href="/playlist?id=608246875" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -817,7 +816,7 @@ data-res-type="13"
 data-res-id="608246875"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">14万</span>
+<span class="nb">16万</span>
 </div>
 </div>
 <p class="dec">
@@ -827,7 +826,7 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/fucezXbUZG1bBUiQlG2XRw==/19034745300060210.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/fucezXbUZG1bBUiQlG2XRw==/19034745300060210.jpg?param=140y140"/>
 <a title="百首韩国女声，自有属于你的星辰" href="/playlist?id=612835133" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -835,7 +834,7 @@ data-res-type="13"
 data-res-id="612835133"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">68万</span>
+<span class="nb">70万</span>
 </div>
 </div>
 <p class="dec">
@@ -845,25 +844,44 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/0Bym8smzbCzqz7Ek-o9euw==/19208468137248553.jpg?param=140y140"/>
-<a title="【韩国女团】那些有大Hit曲潜力的非主打" href="/playlist?id=607498262" class="msk"></a>
+<img class="j-flag" src="http://p1.music.126.net/VxGIkljaTdEb9mMvYcnL9w==/109951162867823512.jpg?param=140y140"/>
+<a title="【华语】你说你要牵我的手去流浪" href="/playlist?id=614621665" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
 data-res-type="13"
-data-res-id="607498262"
+data-res-id="614621665"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">48万</span>
+<span class="nb">143万</span>
 </div>
 </div>
 <p class="dec">
-<a title="【韩国女团】那些有大Hit曲潜力的非主打" href="/playlist?id=607498262" class="tit f-thide s-fc0">【韩国女团】那些有大Hit曲潜力的非主打</a>
+<a title="【华语】你说你要牵我的手去流浪" href="/playlist?id=614621665" class="tit f-thide s-fc0">【华语】你说你要牵我的手去流浪</a>
 </p>
-<p><span class="s-fc4">by</span> <a title="我并不懂膜法" href="/user/home?id=321559950" class="nm nm-icn f-thide s-fc3">我并不懂膜法</a> </p>
+<p><span class="s-fc4">by</span> <a title="贰拾柒_" href="/user/home?id=74953725" class="nm nm-icn f-thide s-fc3">贰拾柒_</a> </p>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/reAb3ke5-ZqQMxQhsxescg==/109951162865110249.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/_ypY9EyS95h8f_VLf2SOGg==/109951162867814935.jpg?param=140y140"/>
+<a title="别让时光偷走你上扬的嘴角" href="/playlist?id=614636293" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="614636293"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">293万</span>
+</div>
+</div>
+<p class="dec">
+<a title="别让时光偷走你上扬的嘴角" href="/playlist?id=614636293" class="tit f-thide s-fc0">别让时光偷走你上扬的嘴角</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="治愈兔" href="/user/home?id=251000367" class="nm nm-icn f-thide s-fc3">治愈兔</a> <sup class="u-icn u-icn-84 "></sup>
+</p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/reAb3ke5-ZqQMxQhsxescg==/109951162865110249.jpg?param=140y140"/>
 <a title="《滚石》评选出最伟大的100首英文歌曲" href="/playlist?id=603132384" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -871,7 +889,7 @@ data-res-type="13"
 data-res-id="603132384"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">151万</span>
+<span class="nb">155万</span>
 </div>
 </div>
 <p class="dec">
@@ -882,7 +900,45 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/GqoqOfR_yQzMpvC2U7Iv-Q==/18583945534484475.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/9Wbzh1owfZ1ZxoagdDb0kw==/18737877162388473.jpg?param=140y140"/>
+<a title="〖那些情有独钟的闽南语歌〗" href="/playlist?id=610982531" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="610982531"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">21万</span>
+</div>
+</div>
+<p class="dec">
+<a title="〖那些情有独钟的闽南语歌〗" href="/playlist?id=610982531" class="tit f-thide s-fc0">〖那些情有独钟的闽南语歌〗</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="背了个影" href="/user/home?id=26852587" class="nm nm-icn f-thide s-fc3">背了个影</a> <sup class="u-icn u-icn-84 "></sup>
+</p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/Ub27er7FoNu_9YSujnsiTw==/18590542604259165.jpg?param=140y140"/>
+<a title="柔情缱绻的女声，绵绵不绝的情思" href="/playlist?id=607138638" class="msk"></a>
+<div class="bottom">
+<a class="icon-play f-fr" title="播放" href="javascript:;"
+data-res-type="13"
+data-res-id="607138638"
+data-res-action="play"></a>
+<span class="icon-headset"></span>
+<span class="nb">174万</span>
+</div>
+</div>
+<p class="dec">
+<a title="柔情缱绻的女声，绵绵不绝的情思" href="/playlist?id=607138638" class="tit f-thide s-fc0">柔情缱绻的女声，绵绵不绝的情思</a>
+</p>
+<p><span class="s-fc4">by</span> <a title="xept" href="/user/home?id=74029445" class="nm nm-icn f-thide s-fc3">xept</a> <sup class="u-icn u-icn-84 "></sup>
+</p>
+</li>
+<li>
+<div class="u-cover u-cover-1">
+<img class="j-flag" src="http://p1.music.126.net/GqoqOfR_yQzMpvC2U7Iv-Q==/18583945534484475.jpg?param=140y140"/>
 <a title="抒情摇滚 · 骨子里的温柔与呐喊" href="/playlist?id=603589032" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -890,7 +946,7 @@ data-res-type="13"
 data-res-id="603589032"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">185万</span>
+<span class="nb">187万</span>
 </div>
 </div>
 <p class="dec">
@@ -901,44 +957,7 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/-_DYRyhh8_ujS8Msb4FWrA==/109951162870041686.jpg?param=140y140"/>
-<a title="华语•从歌名渗透进歌曲的纯净意境" href="/playlist?id=604667405" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="604667405"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">165万</span>
-</div>
-</div>
-<p class="dec">
-<a title="华语•从歌名渗透进歌曲的纯净意境" href="/playlist?id=604667405" class="tit f-thide s-fc0">华语•从歌名渗透进歌曲的纯净意境</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="可尼晏" href="/user/home?id=283413472" class="nm nm-icn f-thide s-fc3">可尼晏</a> <sup class="u-icn u-icn-84 "></sup>
-</p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/TOaNjkDIvkp8c3LnSk3p-A==/18627925999582383.jpg?param=140y140"/>
-<a title="〖古装金曲〗一刀，一剑，以歌，以酒！" href="/playlist?id=602119310" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="602119310"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">320万</span>
-</div>
-</div>
-<p class="dec">
-<a title="〖古装金曲〗一刀，一剑，以歌，以酒！" href="/playlist?id=602119310" class="tit f-thide s-fc0">〖古装金曲〗一刀，一剑，以歌，以酒！</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="阿饼听音乐" href="/user/home?id=347889556" class="nm nm-icn f-thide s-fc3">阿饼听音乐</a> </p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/qzhRPDwZytRE_P7lS2-Wcw==/18748872278656537.jpg?param=140y140"/>
+<img class="j-flag" src="http://p1.music.126.net/qzhRPDwZytRE_P7lS2-Wcw==/18748872278656537.jpg?param=140y140"/>
 <a title="YouTube最快达到一亿点击的音乐视频Top100" href="/playlist?id=611155301" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
@@ -946,7 +965,7 @@ data-res-type="13"
 data-res-id="611155301"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">164万</span>
+<span class="nb">167万</span>
 </div>
 </div>
 <p class="dec">
@@ -956,40 +975,21 @@ data-res-action="play"></a>
 </li>
 <li>
 <div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p4.music.126.net/wkymOmtllbHXdh4G3jLArw==/18643319162379588.jpg?param=140y140"/>
-<a title="狂沙依旧万里扬，天涯从此不独行" href="/playlist?id=603192070" class="msk"></a>
+<img class="j-flag" src="http://p1.music.126.net/TOaNjkDIvkp8c3LnSk3p-A==/18627925999582383.jpg?param=140y140"/>
+<a title="〖古装金曲〗一刀，一剑，以歌，以酒！" href="/playlist?id=602119310" class="msk"></a>
 <div class="bottom">
 <a class="icon-play f-fr" title="播放" href="javascript:;"
 data-res-type="13"
-data-res-id="603192070"
+data-res-id="602119310"
 data-res-action="play"></a>
 <span class="icon-headset"></span>
-<span class="nb">214万</span>
+<span class="nb">324万</span>
 </div>
 </div>
 <p class="dec">
-<a title="狂沙依旧万里扬，天涯从此不独行" href="/playlist?id=603192070" class="tit f-thide s-fc0">狂沙依旧万里扬，天涯从此不独行</a>
+<a title="〖古装金曲〗一刀，一剑，以歌，以酒！" href="/playlist?id=602119310" class="tit f-thide s-fc0">〖古装金曲〗一刀，一剑，以歌，以酒！</a>
 </p>
-<p><span class="s-fc4">by</span> <a title="___________刂巾____________" href="/user/home?id=95943913" class="nm nm-icn f-thide s-fc3">___________刂巾____________</a> <sup class="u-icn u-icn-84 "></sup>
-</p>
-</li>
-<li>
-<div class="u-cover u-cover-1">
-<img class="j-flag" src="http://p3.music.126.net/O-9leNn-PJ2ik72Wvoldlw==/18673005976914196.jpg?param=140y140"/>
-<a title="欢乐好声音 电影原声带" href="/playlist?id=602982725" class="msk"></a>
-<div class="bottom">
-<a class="icon-play f-fr" title="播放" href="javascript:;"
-data-res-type="13"
-data-res-id="602982725"
-data-res-action="play"></a>
-<span class="icon-headset"></span>
-<span class="nb">38万</span>
-</div>
-</div>
-<p class="dec">
-<a title="欢乐好声音 电影原声带" href="/playlist?id=602982725" class="tit f-thide s-fc0">欢乐好声音 电影原声带</a>
-</p>
-<p><span class="s-fc4">by</span> <a title="终生学习者" href="/user/home?id=46651914" class="nm nm-icn f-thide s-fc3">终生学习者</a> </p>
+<p><span class="s-fc4">by</span> <a title="阿饼听音乐" href="/user/home?id=347889556" class="nm nm-icn f-thide s-fc3">阿饼听音乐</a> </p>
 </li>
 </ul>
 <div id="m-pl-pager"> <div class="u-page">
@@ -1003,7 +1003,7 @@ data-res-action="play"></a>
 <a href="/discover/playlist/?order=hot&cat=%E5%85%A8%E9%83%A8&limit=35&offset=210" class="zpgi">7</a>
 <a href="/discover/playlist/?order=hot&cat=%E5%85%A8%E9%83%A8&limit=35&offset=245" class="zpgi">8</a>
 <span class="zdot">...</span>
-<a href="/discover/playlist/?order=hot&cat=%E5%85%A8%E9%83%A8&limit=35&offset=1400" class="zpgi">41</a>
+<a href="/discover/playlist/?order=hot&cat=%E5%85%A8%E9%83%A8&limit=35&offset=1435" class="zpgi">42</a>
 <a href="/discover/playlist/?order=hot&cat=%E5%85%A8%E9%83%A8&limit=35&offset=35" class="zbtn znxt">下一页</a>
 </div>
 </div>
@@ -2293,7 +2293,7 @@ ${getArtistName(x.artists)}
 </div>
 </textarea>
 </div>
-<script src="//s3.music.126.net/sep/s/2/core.js?b4bde56c83ae800a5cc5304f14697d0f" type="text/javascript"></script><script src="//s3.music.126.net/sep/s/2/pt_discover_playlist.js?f6b18a8f85c8dcc0851c686af99372da" type="text/javascript"></script>
+<script src="//s3.music.126.net/sep/s/2/core.js?628acf341e4052b9e54787e882dbcef8" type="text/javascript"></script><script src="//s3.music.126.net/sep/s/2/pt_discover_playlist.js?71b7b37a2ab36b6255d38cdb070f98c6" type="text/javascript"></script>
 </body>
 <script type="text/javascript">
 var _gaq = _gaq || [];
