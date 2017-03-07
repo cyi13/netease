@@ -56,7 +56,7 @@ class Common {
         if(empty($rule) && empty($string)){
             return null;
         }
-
+        
         preg_match_all($rule, $string, $list);
         //使用第二个结果
         if(!empty($list[1])){
