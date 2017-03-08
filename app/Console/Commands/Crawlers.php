@@ -11,14 +11,14 @@ class Crawlers extends Command
      *
      * @var string
      */
-    protected $signature = 'crawler:cloudPlayList';
+    protected $signature = 'crawler:cloud {type}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'crawler the cloudmusic playlist';
+    protected $description = 'crawler the cloudmusic';
 
     /**
      * Create a new command instance.
@@ -38,8 +38,12 @@ class Crawlers extends Command
      */
     public function handle()
     {
-        if($this->confirm('确定要开始抓取吗')){
-            $this->crawler->getPlayList();
+        if($this->confirm('do you want to start collect now ?')){
+            $collectType = $this->argument('type');
+            if($collectType == 'playlist'){
+                //抓取歌单
+                $this->crawler->getPlayList();
+            }
         }
     }
 }

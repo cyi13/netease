@@ -13,26 +13,17 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      */
     public function getCategoryList(){
         
-        //抓取出来的放到txt文件中去
-        $filePath    = './crawlers/';
-        $fileAddress = './crawlers/cloudMusicCategory.txt';
-        if(file_exists($fileAddress)){
-        	$CategoryPage = file_get_contents($fileAddress);
-        }else{
-        	$url = "http://music.163.com/discover/playlist/?order=hot";
-        	$CategoryPage = $this->sendCurl($url);
-            if(!is_dir($filePath)){
-                mkdir($filePath);
-            }
-            file_put_contents($fileAddress,$CategoryPage);
-        }
-
+        //网易云歌单首页
+        $url = "http://music.163.com/discover/playlist/?order=hot";
+        $CategoryPage = $this->sendCurl($url);
+        //匹配一级分类及包含的二级分类区域
         $rule                 = '#<dt><i class="u-icn u-.*"></i>(.*)</dt>([\s\S]*?)</dd>#';
         $list                 = $this->pregMathAll($rule,$CategoryPage);
         //歌单的第一级分类
-        $firstCategoryList    =  $list[0];
+        $firstCategoryList    = $list[0];
         //包含第二级分类的字符串
-        $secondCategoryString = $list[1];       
+        $secondCategoryString = $list[1];   
+        //存放分类的数组    
         $categoryList         = array();
         //简单判断一下总的分类数量 便于判定是否要更新数据库
         $totalCateNum         = count($firstCategoryList);
@@ -44,8 +35,11 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             $rule   = '|<a class="s-fc1 " href="(.*)" data-cat="(.*)">.*</a><span class="line">|';
             $result = $this->pregMathAll($rule,$value);
             if(!empty($result)){
+                //链接地址
                 $hrefList  = $result[0];
+                //分类标题
                 $titleList = $result[1];
+
                 foreach ($hrefList as $k => $v) {
                     //获得的第二级分类名称和对应的URL
                     $newList[$k]['href']     = $this->cloudMusicDomain . $v;
@@ -96,9 +90,10 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                     }
                 }
             }
+            
             return array('totalSuccessNum'=>$totalSuccessNum,'totalError'=>$totalError);
         }
-        return '数据已经存在，无须更新';
+        return array('msg'=>'the category data is existed,you don\'t need to collect again');
     }
 
     public function getPlayList(){
@@ -106,6 +101,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         //分类表模型
         $CateModel = new \App\Models\CloudMusicCategory;
         $list = $CateModel->where('parentCateId','>',0)->orderBy('cateId','asc')->get()->toArray();
+
         if(empty($list)){
             //抓取分类
             $this->getCategoryList();
@@ -115,20 +111,34 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         //歌单表模型
         $PlayListModel = new \App\Models\CloudPlayList;
         $executeNum = 0;
-        //获取一下上次的抓取断点
+
+        //获取一下上次的抓取断点 继续上次的抓取
         $lastExecuteResult = DB::table('execute_result')->orderBy('id','desc')->first();
-        $lastCate = $lastExecuteResult->cateId;
-        $lastOffset = $lastExecuteResult->offset;
+        //如果没数据 就是第一次
+        if(!empty($lastExecuteResult)){
+            $lastCate = $lastExecuteResult->cateId;
+            $lastOffset = $lastExecuteResult->offset;
+        }else{
+            $lastOffset = 0;
+        }
+        //遍历分类列表 根据列表中的链接地址去抓取歌单
         foreach ($list as $value) {
         	//已经抓取过啦
-        	if($value['cateId'] < $lastCate){
-        		continue;
-        	}
+            if(isset($lastCate) & !empty($lastCate)){
+            	if($value['cateId'] < $lastCate){
+            		continue;
+            	}
+            }
+            //重置
+            if($lastOffset > 0){
+                $lastOffset = 0;
+            }
+            
         	//使用事务来批量插入
         	DB::beginTransaction();
         	//要插入的数据先存放在数组里面
         	$playList = array();
-        	//要验证的ID
+        	//id同一放数组里面 一起验证重复
             $playListId = array();
 
             $url = $value['link'];
