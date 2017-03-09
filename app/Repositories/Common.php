@@ -51,7 +51,7 @@ class Common {
      * @param  string $string 字符串内容
      * @return array          有匹配返回一个结果数组 否则返回空
      */
-    public function pregMathAll($rule,$string){
+    protected function pregMathAll($rule,$string){
 
         if(empty($rule) && empty($string)){
             return null;
@@ -65,6 +65,80 @@ class Common {
         }else{
             return null;
         }
+    }
 
+    /**
+     * 信息写入文件中 
+     * @return bollean 
+     */
+    protected function putIntoFile($filePath='',$msg=''){
+
+        if(empty($filePath) && empty($msg)){
+            return false;
+        }
+        //文件放到 根目录storage下面
+        $fileRootPath = storage_path('app\public');
+
+        $fileMsg = explode('/', $filePath);
+        //最后一个为文件名
+        $fileName = array_pop($fileMsg);
+        //判断目录是否存在 否则建立目录
+        $currentPath = $fileRootPath.'\\';
+        foreach ($fileMsg as $key => $value) {
+            $currentPath .= $value.'\\';
+            if(!is_dir($currentPath)){
+                mkdir($currentPath,777);
+            }
+        }
+
+        //开始推送数据进去 成功返回的是写入的字节数 失败则返回false
+        $res = file_put_contents($currentPath.$fileName,$msg);
+
+        return $res;
+    }
+
+    /**
+     * 
+     */
+    protected function getFile($filePath=''){
+
+        if(empty($filePath)){
+            return false;
+        }
+        //文件存放根目录
+        $fileRootPath = storage_path('app\public');
+        //使用反斜杠
+        $filePath = str_replace('/', '\\', $filePath);
+
+        $msg = file_get_contents($fileRootPath.'\\'.$filePath);
+
+        return $msg;
+    }
+
+    /**
+     * 转换字符串中的汉子为阿拉伯数字 暂时匹配一个万
+     * @param  [type] $string [description]
+     * @return [type]         [description]
+     */
+    protected function chineseToNumber($string=''){
+        if(empty($string)){
+            return false;
+        }
+        //对照表
+        $array = array('万'=>'0000');
+
+        //正则匹配分离中英文   
+        //http://www.cnblogs.com/toumingbai/p/4688433.html  百度找的 php匹配中文和js匹配中文不一样
+        $rule = '|([0-9]*)([\x{4e00}-\x{9fa5}])|u';
+        $res = $this->pregMathAll($rule,$string);
+        if(!empty($res)){
+            $number  = $res[0][0];
+            $chinese = $res[1][0];
+            if(array_key_exists($chinese,$array)){
+                $number = $number.$array[$chinese];
+                return intval($number);
+            }
+        }
+        return $string;
     }
 }

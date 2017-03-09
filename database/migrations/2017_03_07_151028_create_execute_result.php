@@ -14,6 +14,7 @@ class CreateExecuteResult extends Migration
     public function up()
     {   if(!Schema::hasTable('execute_result')){
             Schema::create('execute_result', function (Blueprint $table) {
+                $table->engine = 'myisam';
                 $table->increments('id');
                 $table->integer('cateId');
                 $table->integer('offset');

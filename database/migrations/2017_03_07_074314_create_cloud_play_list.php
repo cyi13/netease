@@ -20,6 +20,9 @@ class CreateCloudPlayList extends Migration
                 $table->string('listTitle',50)->comment('歌单标题');
                 $table->string('listImg')->comment('歌单头像');
                 $table->string('link')->comment('歌单的链接地址');
+                $table->integer('listenNum')->comment('歌单收听数');
+                $table->string('by')->comment('创建人');
+                $table->string('spaceLink')->comment('创建人的空间链接');
                 $table->integer('parentCateId')->comment('所属分类');
                 $table->timestamps();
             });

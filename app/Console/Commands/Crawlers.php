@@ -39,10 +39,16 @@ class Crawlers extends Command
     public function handle()
     {
         if($this->confirm('do you want to start collect now ?')){
+
             $collectType = $this->argument('type');
-            if($collectType == 'playlist'){
-                //抓取歌单
-                $this->crawler->getPlayList();
+            switch ($collectType) {
+                case 'playlist':
+                    //抓取歌单
+                    $this->crawler->getPlayList();
+                    break;
+                case 'musiclist':
+                    $this->crawler->collectMusicMessage();
+                    break;
             }
         }
     }

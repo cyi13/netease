@@ -1,21 +1,38 @@
 <?php
+
 namespace App\Repositories\Implement;
 use App\Repositories\Interfaces\CrawlersInterface;
 use App\Repositories\Common;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * 数据收集
+ *
+ * @author CGY
+ */
 class CrawlersRepository extends Common implements CrawlersInterface{
 
+    /**
+     * 网易云的域名地址
+     * @var string
+     */
     protected $cloudMusicDomain = 'http://music.163.com';
+
+    /**
+     * 记录处理的数据
+     */
+    protected $executeNum = 0;
+
     /**
      * 获取网易云的歌单分类并插入到数据库
      * @return void
      */
     public function getCategoryList(){
-        
+
         //网易云歌单首页
         $url = "http://music.163.com/discover/playlist/?order=hot";
         $CategoryPage = $this->sendCurl($url);
+
         //匹配一级分类及包含的二级分类区域
         $rule                 = '#<dt><i class="u-icn u-.*"></i>(.*)</dt>([\s\S]*?)</dd>#';
         $list                 = $this->pregMathAll($rule,$CategoryPage);
@@ -29,9 +46,11 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $totalCateNum         = count($firstCategoryList);
         //获取第二级分类 将第一级和第二级对应起来
         foreach ($secondCategoryString as $key => $value) {
+
             if(!isset($categoryList[$key]['firstCategory'])){
                 $categoryList[$key]['firstCategory'] = $firstCategoryList[$key];
             }
+            //二级分类抓取
             $rule   = '|<a class="s-fc1 " href="(.*)" data-cat="(.*)">.*</a><span class="line">|';
             $result = $this->pregMathAll($rule,$value);
             if(!empty($result)){
@@ -58,8 +77,6 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         //抓取出来的数量大于数据表中已有的就重新生成
         if(intval($count) < intval($totalCateNum)){
             
-            //统计一下插入的数量
-            $totalSuccessNum = 0;
             $totalError = array();
             //清空一下数据表
             $model->truncate();
@@ -73,7 +90,6 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 if(empty($res)){
                     $totalError[] = array('cateName'=>$value['firstCategory'],);
                 }else{
-                    $totalSuccessNum ++;
                     $cateId = $res->cateId;
                     $cateName = $res->cateName;
                     foreach ($value['secondCategory'] as $k => $v) {
@@ -82,20 +98,19 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                                      'parentCateName' => $cateName,
                                      'link'           => $v['href']);
                        $res = $model->create($data);
-                       if(empty($res)){
-                            $totalError[] = array('cateName'=>$v['cateName'],'parentCate'=>$value['firstCategory']);
-                       }else{
-                            $totalSuccessNum ++;
-                       }
+                       $this->executeNum++;
                     }
                 }
             }
-            
-            return array('totalSuccessNum'=>$totalSuccessNum,'totalError'=>$totalError);
+            return array('totalSuccessNum'=>$this->executeNum,'totalError'=>$totalError);
         }
         return array('msg'=>'the category data is existed,you don\'t need to collect again');
     }
 
+    /**
+     * 歌单抓取
+     * @return array
+     */
     public function getPlayList(){
 
         //分类表模型
@@ -148,7 +163,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 $data = array('limit'=>$limit,'offset'=>$offset);
                 $newUrl = $url.'&'.http_build_query($data);
                 $res = $this->sendCurl($newUrl);
-                
+
+                // $this->putIntoFile('crawler/playlist.txt',$res);die;
                 //获取最后一页的页码
                 if(!isset($lastPageNum)){
                     //没有分页抓取一次分页
@@ -166,9 +182,9 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 }
 
                 //开始抓取
-                $rule = '|<img class="j-flag" src="(.*)"\/>\n<a title="(.*)" href="(.*)" class="msk">[\s\S]*?data-res-id="(.*)"[\s\S]*?<span class="nb">(.*)<\/span>|';
+                $rule = '|<img class="j-flag" src="(.*)"\/>\n<a title="(.*)" href="(.*)" class="msk">[\s\S]*?data-res-id="(.*)"[\s\S]*?<span class="nb">(.*)<\/span>[\s\S]*?<a title=[\s\S]*?<a title="(.*?)" href="(.*?)"|';
                 $pageList = $this->pregMathAll($rule,$res);
-
+                // echo '<pre>';print_r($pageList);die;
                 if(!empty($res)){
                     //歌单图片
                     $imgList   		= $pageList[0];
@@ -178,8 +194,13 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                     $hrefList  		= $pageList[2];
                     //歌单Id
                     $listId 		= $pageList[3];
-                    //收藏数
-                    $collectionList = $pageList[4];
+                    //收听数
+                    $listenList = $pageList[4];
+                    //歌单创建人
+                    $byList   = $pageList[5];
+                    //创建人空间链接
+                    $spaceLinkList = $pageList[6];
+
                 }
  				//数据先存储到数组中统一插入
                 foreach ($listId as $k => $v) {
@@ -188,8 +209,10 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                                   'listTitle'    => $titleList[$k],
                                   'listImg'      => $imgList[$k],
                                   'link'         => $this->cloudMusicDomain.$hrefList[$k],
+                                  'listenNum'   => $this->chineseToNumber($listenList[$k]),
+                                  'by'           => $byList[$k],
+                                  'spaceLink'    => $this->cloudMusicDomain.$spaceLinkList[$k],
                                   'parentCateId' => $value['cateId']);
-                    
                     //存放到数组里面 统一插入
                     $playList[$v] = $data;
                     //存放到数组里面 统一验重复数据
@@ -224,5 +247,22 @@ class CrawlersRepository extends Common implements CrawlersInterface{
 	        //提交事务
 	        DB::commit();	     
     	}
+    }
+
+    /**
+     * 抓取歌曲信息
+     *
+     * 主要从歌单中抓取 
+     * @return array
+     */
+    public function collectMusicMessage(){
+
+        //歌单模型
+        $PlayListModel = new \App\Models\CloudPlayList;
+
+        $playList = $PlayListModel->get();
+
+
+
     }
 }
