@@ -18,7 +18,6 @@ class CreateExecuteResult extends Migration
                 $table->increments('id');
                 $table->integer('cateId');
                 $table->integer('offset');
-                $table->timestamps();
             });
         }
     }

@@ -12,7 +12,7 @@ class CrawlersController extends Controller
     }
     
     public function cloudMusic(){
-        $res = $this->craws->getPlayList();
+        $res = $this->craws->collectMusicMessage();
         print_r($res);
     }
 }

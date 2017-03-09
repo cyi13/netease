@@ -24,6 +24,7 @@ class CreateCloudPlayList extends Migration
                 $table->string('by')->comment('创建人');
                 $table->string('spaceLink')->comment('创建人的空间链接');
                 $table->integer('parentCateId')->comment('所属分类');
+                $table->integer('collectNum')->default(0)->comment('被收藏数');
                 $table->timestamps();
             });
         }

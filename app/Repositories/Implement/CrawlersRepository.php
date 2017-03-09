@@ -257,11 +257,15 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      */
     public function collectMusicMessage(){
 
-        //歌单模型
+        // //歌单模型
         $PlayListModel = new \App\Models\CloudPlayList;
 
-        $playList = $PlayListModel->get();
-
+        $playList = $PlayListModel->select('listId','link')->take(10)->get()->toArray();
+        foreach ($playList as $key => $value) {
+            \Redis::set('urlList',11);
+        }
+        $res = \Redis::lrange('names', 0, 10);
+        print_r($res);die;
 
 
     }
