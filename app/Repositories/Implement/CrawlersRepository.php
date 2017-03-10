@@ -17,7 +17,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      * @var string
      */
     protected $cloudMusicDomain = 'http://music.163.com';
-
+    
     /**
      * 记录处理的数据
      */
@@ -257,16 +257,99 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      */
     public function collectMusicMessage(){
 
-        // //歌单模型
-        $PlayListModel = new \App\Models\CloudPlayList;
-
-        $playList = $PlayListModel->select('listId','link')->take(10)->get()->toArray();
-        foreach ($playList as $key => $value) {
-            \Redis::set('urlList',11);
+        $Redis = $this->Redis();
+        // echo $Redis->llen('playlist');die;
+        // $Redis->del('playlist');
+        // $Redis->del('lastPlayListId');
+        //队列为空的话 添加url进队列
+        if(empty($Redis->llen('playlist'))){
+            $this->putUrlIntoQueue();
         }
-        $res = \Redis::lrange('names', 0, 10);
-        print_r($res);die;
 
+        //右边出队列
+        $url   = $Redis->rpop('playlist');
+        //请求页面信息
+        $res   = $this->sendCurl($url);
+        //获取正则表达式
+        $rule  = $this->getPregRule('musiclist');
+        //正则匹配
+        $array = $this->pregMathAll($rule,$res);
 
+        $idArray = $array[0];
+
+        //根据抓取的Id去抓取歌曲信息
+        $this->getMusicMessage($idArray);
+
+        // $this->putIntoFile('crawler/musiclist.txt',$res);
+
+    }
+
+    /**
+     * 添加url进队列
+     * @return [type] [description]
+     */
+    public function putUrlIntoQueue(){
+
+        $Redis = $this->Redis();
+
+        $lastPlayListId = empty($Redis->get('lastPlayListId')) ? 0 : $Redis->get('lastPlayListId');
+        // echo $lastPlayListId;die;
+        // 歌单模型
+        $PlayListModel = new \App\Models\CloudPlayList;
+        
+        //一次取10000条添加进队列
+        for($offset = 0,$num=10000,$totalNum=0;;$offset=$offset+$num){
+            //原来还有offset
+            $playList = $PlayListModel->select('id','listId','link')->where('id','>',$lastPlayListId)
+                                      ->orderBy('id','asc')->offset($offset)->limit($num)->get()
+                                      ->toArray();
+
+            if(empty($playList)){
+                break;
+            }
+            // print_r($playList);
+            $urlList  = array();
+            foreach ($playList as $value) {
+                $urlList[] = $value['link'];
+            }
+            // echo '<pre>';
+            // print_r($urlList);
+            //添加进去队列  左入列
+            $totalNum = $this->putArrayIntoQueue($urlList,'playlist');
+
+            //记录一下最后的一个Id  最后一次查找的到playList为空 需要上一次的
+            $lastPlayListIdArray = array_pop($playList);
+
+            $Redis->set('lastPlayListId',$lastPlayListId['id']);
+        }
+
+        return $totalNum;
+    }
+
+    public function getMusicMessage($musicIdArray){
+
+        if(empty($musicIdArray)){
+            return false;
+        }
+
+        $Redis = $this->Redis();
+ 
+        //网易云音乐 音乐地址格式
+        $musicLinkDomain = $this->cloudMusicDomain.'/song?id=';
+
+        foreach ($musicIdArray as $key => $value) {
+
+            //把要抓取的音乐Id放入redis集合之中 集合可以自动排重
+            $insertMsg = $Redis->set('musicIdList',$value);
+            //返回为int(1)则为未抓取过的
+            if($insertMsg){
+                $url = $musicLinkDomain.$value;
+                echo $url;
+                $res = $this->sendCurl($url);
+                $this->putIntoFile('crawler/musicMsg.txt',$res);die;
+
+            }
+            
+        }
     }
 }

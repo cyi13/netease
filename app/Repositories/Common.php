@@ -3,6 +3,16 @@ namespace App\Repositories;
 class Common {
 
     /**
+     * Redis对象
+     */
+    protected $Redis;
+
+    /**
+     * 正则表达式数组
+     */
+    protected $rule=array();
+
+    /**
      * curl方式获取目标地址的内容
      *
      * @param string  $url
@@ -140,5 +150,97 @@ class Common {
             }
         }
         return $string;
+    }
+
+    /**
+     * 连接Redis  
+     * 
+     * 这是php原生的连接方式
+     * Reids配置信息在.env里面设置
+     * laravel Facades 一直提示错误，还没找到解决方式
+     *
+     * @return object 
+     */
+    protected function Redis(){
+
+        if(empty($this->Redis)){
+            $this->Redis = new \redis();
+            //redis配置信息
+            $redisConfig = config('database.redis');
+            $host = $redisConfig['default']['host'];
+            $port = $redisConfig['default']['port'];
+            $this->Redis->connect($host,$port);
+        }
+        return $this->Redis;
+    }
+
+    /**
+     * 批量写入redis队列
+     * @param  array  $array    [description]
+     * @param  string $queueKey [description]
+     * @return [type]           [description]
+     */
+    protected function putArrayIntoQueue($array=array(),$queueKey='default'){
+
+        if(empty($array)){
+            return false;
+        }
+
+        //Redis对象
+        $Redis = $this->Redis();
+        //只接受一维数组    为什么要歧视二维数组
+        if(!$this->isDyadicArray($array)){
+
+            foreach ($array as $value) {
+                $Redis->lpush($queueKey,$value);
+            }
+
+            //返回这个队列的长度的长度
+            return $Redis->llen($queueKey);
+
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否是二维数组
+     * @param  array    $array 
+     * @return boolean 
+     */
+    protected function isDyadicArray($array){
+
+        if(empty($array)){
+            return false;
+        }
+
+        foreach ($array as $value) {
+            if(is_array($value)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    /**
+     * 获得正则表达式  
+     * @param  string $ruleName 
+     * @return string
+     */
+    protected function getPregRule($ruleName=''){
+
+        if(empty($ruleName)){
+            return false;
+        }
+
+        if(empty($this->rule)){
+            $rule = array( 'musiclist' =>'|<li><a href="\/song\?id=(.*?)">(.*?)<\/a><\/li>|',);
+            $this->rule = $rule;
+        }
+
+        if(array_key_exists($ruleName, $this->rule)){
+            return $this->rule[$ruleName];
+        }
+        return false;
     }
 }
