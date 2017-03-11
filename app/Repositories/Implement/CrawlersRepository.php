@@ -2,9 +2,10 @@
 
 namespace App\Repositories\Implement;
 use App\Repositories\Interfaces\CrawlersInterface;
-use App\Repositories\Common;
+use App\Repositories\Common\Common;
 use Illuminate\Support\Facades\DB;
-
+use App\Repositories\Common\Math_BigInteger;
+use App\Repositories\Common\CloudMusicApi;
 /**
  * 数据收集
  *
@@ -13,16 +14,21 @@ use Illuminate\Support\Facades\DB;
 class CrawlersRepository extends Common implements CrawlersInterface{
 
     /**
-     * 网易云的域名地址
-     * @var string
-     */
-    protected $cloudMusicDomain = 'http://music.163.com';
-    
-    /**
      * 记录处理的数据
      */
     protected $executeNum = 0;
 
+    //存储网易云音乐信息的hash前缀
+    protected $cloudMusicMessageHashKeyPrefix = 'cloudMusicMessage_10000comment_';
+
+    protected $CloudMusicApi;
+
+    const COLUDDMIAN = 'http://music.163.com';
+
+    public function __construct(){
+        //实例化网易云音乐api类
+        $this->CloudMusicApi = new CloudMusicApi();
+    }
     /**
      * 获取网易云的歌单分类并插入到数据库
      * @return void
@@ -61,7 +67,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
 
                 foreach ($hrefList as $k => $v) {
                     //获得的第二级分类名称和对应的URL
-                    $newList[$k]['href']     = $this->cloudMusicDomain . $v;
+                    $newList[$k]['href']     = self::COLUDDMIAN . $v;
                     $newList[$k]['cateName'] = $titleList[$k]; 
                 }
                 //第二级的分类也算进去
@@ -112,7 +118,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      * @return array
      */
     public function getPlayList(){
-
+        echo $this->Redis()->get('ss');die;
         //分类表模型
         $CateModel = new \App\Models\CloudMusicCategory;
         $list = $CateModel->where('parentCateId','>',0)->orderBy('cateId','asc')->get()->toArray();
@@ -208,10 +214,10 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                     $data = array('listId'       => $v,
                                   'listTitle'    => $titleList[$k],
                                   'listImg'      => $imgList[$k],
-                                  'link'         => $this->cloudMusicDomain.$hrefList[$k],
+                                  'link'         => self::COLUDDMIAN.$hrefList[$k],
                                   'listenNum'   => $this->chineseToNumber($listenList[$k]),
                                   'by'           => $byList[$k],
-                                  'spaceLink'    => $this->cloudMusicDomain.$spaceLinkList[$k],
+                                  'spaceLink'    => self::COLUDDMIAN.$spaceLinkList[$k],
                                   'parentCateId' => $value['cateId']);
                     //存放到数组里面 统一插入
                     $playList[$v] = $data;
@@ -278,7 +284,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $idArray = $array[0];
 
         //根据抓取的Id去抓取歌曲信息
-        $this->getMusicMessage($idArray);
+        $this->getMusicMessage($idArray); 
 
         // $this->putIntoFile('crawler/musiclist.txt',$res);
 
@@ -335,21 +341,74 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $Redis = $this->Redis();
  
         //网易云音乐 音乐地址格式
-        $musicLinkDomain = $this->cloudMusicDomain.'/song?id=';
-
-        foreach ($musicIdArray as $key => $value) {
-
+        $musicLinkDomain  = self::COLUDDMIAN.'/song?id=';
+        //匹配歌曲信息的正则表达式
+        $musicMessageRule = $this->getPregRule('musicMessage');
+        //匹配歌手信息的正则表达式
+        $singerRule       = $this->getPregRule('singer');
+        foreach ($musicIdArray as $musicId) {
             //把要抓取的音乐Id放入redis集合之中 集合可以自动排重
-            $insertMsg = $Redis->set('musicIdList',$value);
+            $insertMsg = $Redis->set('musicIdList',$musicId);
             //返回为int(1)则为未抓取过的
             if($insertMsg){
-                $url = $musicLinkDomain.$value;
-                echo $url;
-                $res = $this->sendCurl($url);
-                $this->putIntoFile('crawler/musicMsg.txt',$res);die;
+                //抓取总评论数
+                $musicCommentMsg = $this->CloudMusicApi->musicCommentMsg($musicId);
+                if(!empty($musicCommentMsg)){
+                    //获得的数据为一个json格式的字符串
+                    $commentArray       = json_decode($musicCommentMsg);
+                    //只要评论数大于10000的
+                    $totalCommnetNum    = $commentArray->total;
+                    if(intval($totalCommnetNum) > 10000){
+                        //抓取歌曲信息
+                        $musicMessagePage   = $this->CloudMusicApi->musicMessage($musicId);
+                        //匹配歌曲信息
+                        $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
 
+                        //歌唱者有可能会有多个合唱 进一步处理
+                        $singerString       = $musicMessageArray[1][0];
+                        $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
+
+                        //歌手有多个 存为一个JSON 
+                        foreach ($singerMessageArray[1] as $key=>$singerName){
+                            $array[$key]['singer']     = $singerName;
+                            $array[$key]['singerLink'] = $singerMessageArray[0][$key];
+                        }
+                        $musicMsg['musicId']            = $musicId;
+                        $musicMsg['singerMessage']      = json_encode($array);
+                        //歌曲名
+                        $musicMsg['musicTitle']         = $musicMessageArray[0][0];
+                        //歌曲所属专辑链接
+                        $musicMsg['musicAlbumLink']     = self::COLUDDMIAN.$musicMessageArray[2][0];
+                        //歌曲所属专辑名称
+                        $musicMsg['musicAlbumTitle']    = $musicMessageArray[3][0];
+                        //存储到hash中
+                        $this->putMusicMessageIntoRedisHash($musicMsg);
+                        // $this->putIntoFile('crawler/musicMsg',$singerString);die;
+                    }
+                }
+                // $this->putIntoFile('crawler/json.txt',$res);die;
             }
             
         }
     }
+
+    /**
+     * 用hash结构来存储抓取到的数据
+     *
+     * 先用hash来存储数据 而后通过指定时间或者指定抓取多少数据之后统一存储到数据库
+     * 
+     * @return string
+     */
+    protected function putMusicMessageIntoRedisHash($musicMsg){
+        //键值自增
+        $id = $this->Redis()->incr($this->cloudMusicMessageHashKeyPrefix.'keyNo');
+        if($id){
+            $this->Redis()->hmset($this->cloudMusicMessageHashKeyPrefix.$id,$musicMsg);
+            //返回键值
+            return $id;
+        }
+    }
+
+
+
 }

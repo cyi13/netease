@@ -1,5 +1,5 @@
 <?php
-namespace App\Repositories;
+namespace App\Repositories\Common;
 class Common {
 
     /**
@@ -21,10 +21,12 @@ class Common {
      * @param interge $timeout  超时时间
      * @return array
      */
-    protected function sendCurl($url=null,$postType='GET',$postData=array(),$timeout=10){
+    protected function sendCurl($url=null,$postData=array(),$postType='GET',$header=array(),$timeout=10){
+
         if(empty($url)) {
             return 'url is empty';
         }
+
         $ch = curl_init();
         //get有参数的话拼接参数
         if($postType == 'GET' & !empty($postData)){
@@ -32,22 +34,27 @@ class Common {
             $url        = $url.'?'.$dataString;
         }
 
-        curl_setopt($ch,CURLOPT_URL,$url);
-
-        //数据传输方式
+        //post方式 尽量使用http_build_query对数据进行处理再传输
         if($postType == 'POST'){
             curl_setopt($ch,CURLOPT_POST,true);
-            curl_setopt($ch,CURLOPT_POSTFIELDS,$postData);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,http_build_query($postData));
         }
-
+        //头部信息
+        if(!empty($header)){
+            curl_setopt($ch,CURLOPT_HTTPHEADER, $header);
+        }
+        //请求的地址
+        curl_setopt($ch,CURLOPT_URL,$url);
         //返回字符串
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         //不返回 HTTP头部信息
         curl_setopt($ch,CURLOPT_HEADER,false);
         //请求超时时间
         curl_setopt($ch,CURLOPT_TIMEOUT,$timeout);
+        // curl_setopt($ch, CURLOPT_ENCODING, 'application/json');
+
         //执行
-        $result = curl_exec($ch);
+        $result = curl_exec($ch);   
         //关闭
         curl_close($ch);
         //返回内容
@@ -162,14 +169,14 @@ class Common {
      * @return object 
      */
     protected function Redis(){
-
+        
         if(empty($this->Redis)){
             $this->Redis = new \redis();
             //redis配置信息
             $redisConfig = config('database.redis');
             $host = $redisConfig['default']['host'];
             $port = $redisConfig['default']['port'];
-            $this->Redis->connect($host,$port);
+            $this->Redis->Connect($host,$port);
         }
         return $this->Redis;
     }
@@ -234,7 +241,12 @@ class Common {
         }
 
         if(empty($this->rule)){
-            $rule = array( 'musiclist' =>'|<li><a href="\/song\?id=(.*?)">(.*?)<\/a><\/li>|',);
+
+            $rule = array( 'musiclist' =>'|<li><a href="\/song\?id=(.*?)">(.*?)<\/a><\/li>|',
+                            //歌曲信息
+                            'musicMessage' => '|<em class="f-ff2">(.*)<\/em>[\s\S]*?<span title=".*?">(.*?)<\/span>[\s\S]*?<a href="(.*?)".*>(.*?)<\/a>|',
+                            //歌手
+                            'singer'=>'|<a.*? href="(.*?)">(.*?)<\/a>|');
             $this->rule = $rule;
         }
 
@@ -242,5 +254,26 @@ class Common {
             return $this->rule[$ruleName];
         }
         return false;
+    }
+
+    /**
+     * 生成指定长度的随机字符串
+     * @param  integer $length 要生成的字符串长度
+     * @return string         
+     */
+    protected function createSecretKey($length){
+
+        if(empty($length)){
+            return null;
+        }
+
+        $string         = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $stringLength   = strlen($string);
+        $newString      = '';
+
+        for($i=0;$i<$length;$i++){
+            $newString .= $string[rand(0,$stringLength-1)];
+        }
+        return $newString;
     }
 }
