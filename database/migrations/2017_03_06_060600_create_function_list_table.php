@@ -12,8 +12,9 @@ class CreateFunctionListTable extends Migration
      * @return void
      */
     public function up()
-    {
-            Schema::create('fun_function_list',function(Blueprint $table){
+    {   
+        if(!Schema::hasTable('function_list')){
+            Schema::create('function_list',function(Blueprint $table){
                 //存储引擎
                 $table->engine = "InnoDB";
                 //自增长Id
@@ -24,6 +25,7 @@ class CreateFunctionListTable extends Migration
                 //默认添加create_at和update_at 列
                 $table->timestamps();
             });
+        }
     }
 
     /**
@@ -33,6 +35,6 @@ class CreateFunctionListTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fun_function_list');
+        Schema::dropIfExists('function_list');
     }
 }
