@@ -22,12 +22,14 @@ class CrawlersRepository extends Common implements CrawlersInterface{
     protected $cloudMusicMessageHashKeyPrefix = 'cloudMusicMessage_10000comment_';
 
     protected $CloudMusicApi;
-
+    
     const COLUDDMIAN = 'http://music.163.com';
 
     public function __construct(){
         //实例化网易云音乐api类
         $this->CloudMusicApi = new CloudMusicApi();
+        //连接redis
+        $this->Redis = $this->Redis();
     }
     /**
      * 获取网易云的歌单分类并插入到数据库
@@ -118,7 +120,6 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      * @return array
      */
     public function getPlayList(){
-        echo $this->Redis()->get('ss');die;
         //分类表模型
         $CateModel = new \App\Models\CloudMusicCategory;
         $list = $CateModel->where('parentCateId','>',0)->orderBy('cateId','asc')->get()->toArray();
@@ -263,17 +264,13 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      */
     public function collectMusicMessage(){
 
-        $Redis = $this->Redis();
-        // echo $Redis->llen('playlist');die;
-        // $Redis->del('playlist');
-        // $Redis->del('lastPlayListId');
         //队列为空的话 添加url进队列
-        if(empty($Redis->llen('playlist'))){
+        if(empty($this->Redis->llen('playlist'))){
             $this->putUrlIntoQueue();
         }
 
         //右边出队列
-        $url   = $Redis->rpop('playlist');
+        $url   = $this->Redis->rpop('playlist');
         //请求页面信息
         $res   = $this->sendCurl($url);
         //获取正则表达式
@@ -296,9 +293,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      */
     public function putUrlIntoQueue(){
 
-        $Redis = $this->Redis();
-
-        $lastPlayListId = empty($Redis->get('lastPlayListId')) ? 0 : $Redis->get('lastPlayListId');
+        $lastPlayListId = empty($this->Redis->get('lastPlayListId')) ? 0 : $Redis->get('lastPlayListId');
         // echo $lastPlayListId;die;
         // 歌单模型
         $PlayListModel = new \App\Models\CloudPlayList;
@@ -326,19 +321,17 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             //记录一下最后的一个Id  最后一次查找的到playList为空 需要上一次的
             $lastPlayListIdArray = array_pop($playList);
 
-            $Redis->set('lastPlayListId',$lastPlayListId['id']);
+            $this->Redis->set('lastPlayListId',$lastPlayListId['id']);
         }
 
         return $totalNum;
     }
 
     public function getMusicMessage($musicIdArray){
-
+         print_r($this->Redis->get('cloudMusicMessage_10000comment_keyNo'));die;
         if(empty($musicIdArray)){
             return false;
         }
-
-        $Redis = $this->Redis();
  
         //网易云音乐 音乐地址格式
         $musicLinkDomain  = self::COLUDDMIAN.'/song?id=';
@@ -348,7 +341,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $singerRule       = $this->getPregRule('singer');
         foreach ($musicIdArray as $musicId) {
             //把要抓取的音乐Id放入redis集合之中 集合可以自动排重
-            $insertMsg = $Redis->set('musicIdList',$musicId);
+            $insertMsg = $this->Redis->set('musicIdList',$musicId);
             //返回为int(1)则为未抓取过的
             if($insertMsg){
                 //抓取总评论数
@@ -380,7 +373,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                         //歌曲所属专辑链接
                         $musicMsg['musicAlbumLink']     = self::COLUDDMIAN.$musicMessageArray[2][0];
                         //歌曲所属专辑名称
-                        $musicMsg['musicAlbumTitle']    = $musicMessageArray[3][0];
+                        $musicMsg['musicAlbumTitle']    =  $musicMessageArray[3][0];
                         //存储到hash中
                         $this->putMusicMessageIntoRedisHash($musicMsg);
                         // $this->putIntoFile('crawler/musicMsg',$singerString);die;
@@ -394,19 +387,30 @@ class CrawlersRepository extends Common implements CrawlersInterface{
 
     /**
      * 用hash结构来存储抓取到的数据
-     *
+     * 
      * 先用hash来存储数据 而后通过指定时间或者指定抓取多少数据之后统一存储到数据库
      * 
      * @return string
      */
     protected function putMusicMessageIntoRedisHash($musicMsg){
         //键值自增
-        $id = $this->Redis()->incr($this->cloudMusicMessageHashKeyPrefix.'keyNo');
+        $id = $this->Redis->incr($this->cloudMusicMessageHashKeyPrefix.'keyNo');
         if($id){
-            $this->Redis()->hmset($this->cloudMusicMessageHashKeyPrefix.$id,$musicMsg);
+            $this->Redis->hmset($this->cloudMusicMessageHashKeyPrefix.$id,$musicMsg);
             //返回键值
             return $id;
         }
+    }
+
+    /**
+     * 将redis hash中歌曲信息写入到数据库中
+     * @return [type] [description]
+     */
+    protected function putMusicMessageIntoDbFromRedis(){
+        //上一次获取到key 配合存储的时候键值有顺序到子曾
+        $lastPutKey = $this->Redis->incr($this->cloudMusicMessageHashKeyPrefix.'lastPutKey');
+        
+
     }
 
 
