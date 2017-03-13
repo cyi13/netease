@@ -1,5 +1,6 @@
 <?php
 namespace App\Repositories\Common;
+use RedisDB;
 class Common {
 
     /**
@@ -12,6 +13,11 @@ class Common {
      */
     protected $rule=array();
 
+    protected function __construct(){
+        //连接redis
+        $this->Redis = new RedisDB;
+        dd($this->Redis->get('ss'));die;
+    }
     /**
      * curl方式获取目标地址的内容
      *
@@ -54,7 +60,7 @@ class Common {
         // curl_setopt($ch, CURLOPT_ENCODING, 'application/json');
 
         //执行
-        $result = curl_exec($ch);   
+        $result = curl_exec($ch);
         //关闭
         curl_close($ch);
         //返回内容
@@ -73,7 +79,7 @@ class Common {
         if(empty($rule) && empty($string)){
             return null;
         }
-        
+
         preg_match_all($rule, $string, $list);
         //使用第二个结果
         if(!empty($list[1])){
@@ -85,8 +91,8 @@ class Common {
     }
 
     /**
-     * 信息写入文件中 
-     * @return bollean 
+     * 信息写入文件中
+     * @return bollean
      */
     protected function putIntoFile($filePath='',$msg=''){
 
@@ -115,7 +121,7 @@ class Common {
     }
 
     /**
-     * 
+     *
      */
     protected function getFile($filePath=''){
 
@@ -144,7 +150,7 @@ class Common {
         //对照表
         $array = array('万'=>'0000');
 
-        //正则匹配分离中英文   
+        //正则匹配分离中英文
         //http://www.cnblogs.com/toumingbai/p/4688433.html  百度找的 php匹配中文和js匹配中文不一样
         $rule = '|([0-9]*)([\x{4e00}-\x{9fa5}])|u';
         $res = $this->pregMathAll($rule,$string);
@@ -160,16 +166,16 @@ class Common {
     }
 
     /**
-     * 连接Redis  
-     * 
+     * 连接Redis
+     *
      * 这是php原生的连接方式
      * Reids配置信息在.env里面设置
      * laravel Facades 一直提示错误，还没找到解决方式
      *
-     * @return object 
+     * @return object
      */
     protected function Redis(){
-        
+
         if(empty($this->Redis)){
             $this->Redis = new \redis();
             //redis配置信息
@@ -193,17 +199,15 @@ class Common {
             return false;
         }
 
-        //Redis对象
-        $Redis = $this->Redis();
         //只接受一维数组    为什么要歧视二维数组
         if(!$this->isDyadicArray($array)){
 
             foreach ($array as $value) {
-                $Redis->lpush($queueKey,$value);
+                $this->Redis->lpush($queueKey,$value);
             }
 
             //返回这个队列的长度的长度
-            return $Redis->llen($queueKey);
+            return $this->Redis->llen($queueKey);
 
         }
         return false;
@@ -211,8 +215,8 @@ class Common {
 
     /**
      * 判断是否是二维数组
-     * @param  array    $array 
-     * @return boolean 
+     * @param  array    $array
+     * @return boolean
      */
     protected function isDyadicArray($array){
 
@@ -230,8 +234,8 @@ class Common {
     }
 
     /**
-     * 获得正则表达式  
-     * @param  string $ruleName 
+     * 获得正则表达式
+     * @param  string $ruleName
      * @return string
      */
     protected function getPregRule($ruleName=''){
@@ -259,7 +263,7 @@ class Common {
     /**
      * 生成指定长度的随机字符串
      * @param  integer $length 要生成的字符串长度
-     * @return string         
+     * @return string
      */
     protected function createSecretKey($length){
 

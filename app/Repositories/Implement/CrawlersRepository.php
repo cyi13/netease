@@ -22,14 +22,13 @@ class CrawlersRepository extends Common implements CrawlersInterface{
     protected $cloudMusicMessageHashKeyPrefix = 'cloudMusicMessage_10000comment_';
 
     protected $CloudMusicApi;
-    
+
     const COLUDDMIAN = 'http://music.163.com';
 
     public function __construct(){
+        parent::__construct();
         //实例化网易云音乐api类
         $this->CloudMusicApi = new CloudMusicApi();
-        //连接redis
-        $this->Redis = $this->Redis();
     }
     /**
      * 获取网易云的歌单分类并插入到数据库
@@ -47,8 +46,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         //歌单的第一级分类
         $firstCategoryList    = $list[0];
         //包含第二级分类的字符串
-        $secondCategoryString = $list[1];   
-        //存放分类的数组    
+        $secondCategoryString = $list[1];
+        //存放分类的数组
         $categoryList         = array();
         //简单判断一下总的分类数量 便于判定是否要更新数据库
         $totalCateNum         = count($firstCategoryList);
@@ -70,7 +69,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 foreach ($hrefList as $k => $v) {
                     //获得的第二级分类名称和对应的URL
                     $newList[$k]['href']     = self::COLUDDMIAN . $v;
-                    $newList[$k]['cateName'] = $titleList[$k]; 
+                    $newList[$k]['cateName'] = $titleList[$k];
                 }
                 //第二级的分类也算进去
                 $totalCateNum += count($newList);
@@ -84,14 +83,14 @@ class CrawlersRepository extends Common implements CrawlersInterface{
 
         //抓取出来的数量大于数据表中已有的就重新生成
         if(intval($count) < intval($totalCateNum)){
-            
+
             $totalError = array();
             //清空一下数据表
             $model->truncate();
             //插入数据库
             foreach($categoryList as $key=>$value){
                 //获取模型
-                
+
                 $data = array('cateName'=>$value['firstCategory']);
                 $res = $model->create($data);
 
@@ -155,7 +154,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             if($lastOffset > 0){
                 $lastOffset = 0;
             }
-            
+
         	//使用事务来批量插入
         	DB::beginTransaction();
         	//要插入的数据先存放在数组里面
@@ -228,19 +227,19 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                     $executeNum++;
 
                 }
-                //每隔四个页面随机暂停 说是为了不被当成恶意访问 
+                //每隔四个页面随机暂停 说是为了不被当成恶意访问
                 if($executeNum % 35 == 0){
                     sleep(rand(1,5));
-                }	
+                }
 
                 //抓取的记录存入到txt文件中  只是为了断点不用重新抓取
                 $executeData = array('cateId'=>$value['cateId'],'offset'=>$offset);
-                DB::table('execute_result')->insert($executeData);  
+                DB::table('execute_result')->insert($executeData);
             }
 
             //验证一下重复的数据
 		    $list = $PlayListModel->select('listId')->whereIn('listId',$playListId)->get()->toArray();
-		      
+
 		    if(!empty($list)){
                	foreach ($list as $val) {
 			        unset($playList[$val['listId']]);
@@ -250,16 +249,16 @@ class CrawlersRepository extends Common implements CrawlersInterface{
 		        foreach ($playList as $keys => $val){
 		        	$createResult = $PlayListModel->create($val);
 		        }
-	        } 
+	        }
 	        //提交事务
-	        DB::commit();	     
+	        DB::commit();
     	}
     }
 
     /**
      * 抓取歌曲信息
      *
-     * 主要从歌单中抓取 
+     * 主要从歌单中抓取
      * @return array
      */
     public function collectMusicMessage(){
@@ -268,21 +267,26 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         if(empty($this->Redis->llen('playlist'))){
             $this->putUrlIntoQueue();
         }
+        while(true){
+            //右边出队列
+            $url   = $this->Redis->rpop('playlist');
 
-        //右边出队列
-        $url   = $this->Redis->rpop('playlist');
-        //请求页面信息
-        $res   = $this->sendCurl($url);
-        //获取正则表达式
-        $rule  = $this->getPregRule('musiclist');
-        //正则匹配
-        $array = $this->pregMathAll($rule,$res);
+            if(empty($url)){
+                break;
+            }
+            //请求页面信息
+            $res   = $this->sendCurl($url);
+            //获取正则表达式
+            $rule  = $this->getPregRule('musiclist');
+            //正则匹配
+            $array = $this->pregMathAll($rule,$res);
 
-        $idArray = $array[0];
+            $idArray = $array[0];
 
-        //根据抓取的Id去抓取歌曲信息
-        $this->getMusicMessage($idArray); 
+            //根据抓取的Id去抓取歌曲信息
+            $this->getMusicMessage($idArray);
 
+        }
         // $this->putIntoFile('crawler/musiclist.txt',$res);
 
     }
@@ -297,7 +301,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         // echo $lastPlayListId;die;
         // 歌单模型
         $PlayListModel = new \App\Models\CloudPlayList;
-        
+
         //一次取10000条添加进队列
         for($offset = 0,$num=10000,$totalNum=0;;$offset=$offset+$num){
             //原来还有offset
@@ -328,11 +332,11 @@ class CrawlersRepository extends Common implements CrawlersInterface{
     }
 
     public function getMusicMessage($musicIdArray){
-         print_r($this->Redis->get('cloudMusicMessage_10000comment_keyNo'));die;
+
         if(empty($musicIdArray)){
             return false;
         }
- 
+
         //网易云音乐 音乐地址格式
         $musicLinkDomain  = self::COLUDDMIAN.'/song?id=';
         //匹配歌曲信息的正则表达式
@@ -361,12 +365,13 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                         $singerString       = $musicMessageArray[1][0];
                         $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
 
-                        //歌手有多个 存为一个JSON 
+                        //歌手有多个 存为一个JSON
                         foreach ($singerMessageArray[1] as $key=>$singerName){
                             $array[$key]['singer']     = $singerName;
-                            $array[$key]['singerLink'] = $singerMessageArray[0][$key];
+                            $array[$key]['singerLink'] = self::COLUDDMIAN.$singerMessageArray[0][$key];
                         }
                         $musicMsg['musicId']            = $musicId;
+                        $musicMsg['link']               = $musicLinkDomain.$musicId;
                         $musicMsg['singerMessage']      = json_encode($array);
                         //歌曲名
                         $musicMsg['musicTitle']         = $musicMessageArray[0][0];
@@ -374,6 +379,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                         $musicMsg['musicAlbumLink']     = self::COLUDDMIAN.$musicMessageArray[2][0];
                         //歌曲所属专辑名称
                         $musicMsg['musicAlbumTitle']    =  $musicMessageArray[3][0];
+                        //所有评论数
+                        $musicMsg['totalComment']       =  $totalCommnetNum;
                         //存储到hash中
                         $this->putMusicMessageIntoRedisHash($musicMsg);
                         // $this->putIntoFile('crawler/musicMsg',$singerString);die;
@@ -381,15 +388,15 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 }
                 // $this->putIntoFile('crawler/json.txt',$res);die;
             }
-            
+
         }
     }
 
     /**
      * 用hash结构来存储抓取到的数据
-     * 
+     *
      * 先用hash来存储数据 而后通过指定时间或者指定抓取多少数据之后统一存储到数据库
-     * 
+     *
      * @return string
      */
     protected function putMusicMessageIntoRedisHash($musicMsg){
@@ -406,13 +413,21 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      * 将redis hash中歌曲信息写入到数据库中
      * @return [type] [description]
      */
-    protected function putMusicMessageIntoDbFromRedis(){
-        //上一次获取到key 配合存储的时候键值有顺序到子曾
-        $lastPutKey = $this->Redis->incr($this->cloudMusicMessageHashKeyPrefix.'lastPutKey');
-        
+    public function putMusicMessageIntoDbFromRedis(){
+        //上一次获取到key 配合存储的时候键值有顺序到自增
+        $keyPrefix  = $this->cloudMusicMessageHashKeyPrefix;
+        $lastPutKey = $this->Redis->get($keyPrefix.'lastPutKey');
 
+        if(empty($lastPutKey)){
+            $lastPutKey = $this->Redis->incr($keyPrefix.'lastPutKey');
+        }
+
+        $lastKeyNo = $this->Redis->get($keyPrefix.'keyNo');
+
+        for($i=$lastPutKey;$i<=$lastKeyNo;$i++){
+            $this->Redis->incr($keyPrefix.'lastPutKey');
+            $musicMsg  = $this->Redis->hgetall($keyPrefix.'510');
+            $res = DB::table('cloud_music_msg')->insert($musicMsg);
+        }
     }
-
-
-
 }
