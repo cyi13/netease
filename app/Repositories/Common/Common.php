@@ -1,6 +1,6 @@
 <?php
 namespace App\Repositories\Common;
-use RedisDB;
+use Illuminate\Support\Facades\Redis as RedisDb;
 class Common {
 
     /**
@@ -15,8 +15,8 @@ class Common {
 
     protected function __construct(){
         //连接redis
-        $this->Redis = new RedisDB;
-        dd($this->Redis->get('ss'));die;
+        // $this->Redis = new RedisDb;
+        $this->Redis = $this->Redis();
     }
     /**
      * curl方式获取目标地址的内容
@@ -248,7 +248,7 @@ class Common {
 
             $rule = array( 'musiclist' =>'|<li><a href="\/song\?id=(.*?)">(.*?)<\/a><\/li>|',
                             //歌曲信息
-                            'musicMessage' => '|<em class="f-ff2">(.*)<\/em>[\s\S]*?<span title=".*?">(.*?)<\/span>[\s\S]*?<a href="(.*?)".*>(.*?)<\/a>|',
+                           'musicMessage' => '|<em class="f-ff2">(.*)<\/em>[\s\S]*?<span title=".*?">(.*?)<\/span>[\s\S]*?<a href="(.*?)".*>(.*?)<\/a>|',
                             //歌手
                             'singer'=>'|<a.*? href="(.*?)">(.*?)<\/a>|');
             $this->rule = $rule;

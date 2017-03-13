@@ -54,6 +54,11 @@ class CloudMusicApi extends Common{
     	//不需要参数加密就可以抓取
     	return $this->sendCurl($url);
     }
+
+    public function cloudMusicPlayListIndex(){
+        $url = "http://music.163.com/discover/playlist/?order=hot";
+        return $this->sendCurl($url);
+    }
     /**
      * 参数加密
      * @param  array $data 
