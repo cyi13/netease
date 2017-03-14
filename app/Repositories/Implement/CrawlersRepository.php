@@ -304,7 +304,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
 
     /**
      * 添加url进队列
-     * @return [type] [description]
+     * @return bollean
      */
     public function putUrlIntoQueue(){
 
@@ -422,7 +422,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      * 将redis hash中信息写入到数据库中
      *
      * 歌曲信息用crontab 定时执行
-     * @return [type] [description]
+     * @return blloean
      */
     public function putMessageIntoDbFromRedis($Model,$keyPrefix){
 

@@ -140,8 +140,8 @@ class Common {
 
     /**
      * 转换字符串中的汉子为阿拉伯数字 暂时匹配一个万
-     * @param  [type] $string [description]
-     * @return [type]         [description]
+     * @param  string $string 
+     * @return string         
      */
     protected function chineseToNumber($string=''){
         if(empty($string)){
@@ -189,9 +189,9 @@ class Common {
 
     /**
      * 批量写入redis队列
-     * @param  array  $array    [description]
-     * @param  string $queueKey [description]
-     * @return [type]           [description]
+     * @param  array  $array    
+     * @param  string $queueKey 
+     * @return bollean           
      */
     protected function putArrayIntoQueue($array=array(),$queueKey='default'){
 
