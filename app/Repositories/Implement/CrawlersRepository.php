@@ -80,7 +80,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
     /**
      * 歌单分类数据放入到数据库中
      * @param  array $categoryList  分类数组
-     * @return bollean               
+     * @return bollean
      */
     protected function putCategoryMessageIntoDB($categoryList,$totalCateNum){
         //数据表模型
@@ -141,31 +141,62 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             		continue;
             	}
             }
-            //下一个抓取的进度要重置
-            if($lastOffset > 0){
-                $lastOffset = 0;
-            }
+            echo 'start cate'.$value['cateId'].'....';
             $url  = $value['link'];
             //每次获取35个歌单
-            for($offset = $lastOffset,$limit = 35;;$offset += 35){
+            for($offset = $lastOffset+35,$limit = 35;;$offset += 35){
                 //生成地址
                 $data   = array('limit'=>$limit,'offset'=>$offset);
                 $newUrl = $url.'&'.http_build_query($data);
-                $res    = $this->getPlayListMessage($newUrl);
-                if(!$res){
+                if(!isset($lastPageNum)){
+                    //抓取一次页码
+                    $res = $this->sendCurl($newUrl);
+                    //没有分页抓取一次分页
+                    $rule = '|<a href=".*" class="zpgi">(.*)<\/a>|';
+                    $pageList = $this->pregMathAll($rule,$res)[0];
+                    //最后一个分页
+                    $lastPageNum = array_pop($pageList);
+                }
+                //判断抓取的是不是最后一页
+                if(intval($offset) >= (intval($lastPageNum)-1)*35){
+                    //先清空最后的页数
+                    unset($lastPageNum);
+                    //跳出循环
                     break;
                 }
+
+                $res    = $this->getPlayListMessage($newUrl);
+                //有可能没有返回信息 需要重新抓取
+                if($res == 'empty'){
+                    $this->Redis->lpush('emptyPageUrl',$newUrl);
+                }
+                //抓取两个界面sleep一次
                 if($offset%70 == 0){
                     sleep(rand(1,3));
                 }
                 //记录一下进度
                 $executeData = array('cateId'=>$value['cateId'],'offset'=>$offset);
                 $this->Redis->hmset('lastCategoryCollectPoint',$executeData);
+                //在命令端输出一下信息
+                echo 'offset:'.$offset.'  ';
+            }
+
+            //下一个抓取的进度要重置
+            if($lastOffset > 0){
+                $lastOffset = 0;
             }
     	}
-        //结束的时候一起放入到数据库
-        $PlayListModel = new \App\Models\CloudPlayList;
-        $this->putMessageIntoDbFromRedis($PlayListModel,$this->cloudPlayListHashKeyPrefix);
+
+      //在抓取一次没有抓取到到地址 没有第三次机会啦
+      while ($ture) {
+        $url = $this->Redis->rpop('emptyPageUrl');
+        if(!$url){
+          $this->getPlayListMessage($url);
+        }
+      }
+      //结束的时候一起放入到数据库
+      $PlayListModel = new \App\Models\CloudPlayList;
+      $this->putMessageIntoDbFromRedis($PlayListModel,$this->cloudPlayListHashKeyPrefix);
     }
 
     /**
@@ -182,13 +213,13 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             //抓取分类
             $this->getCategoryList();
             $list = $CateModel->where('parentCateId','>',0)->orderBy('cateId','asc')->get()->toArray();
-        }  
+        }
         return $list;
     }
 
     /**
      * 获取歌单信息
-     * @param  string $url 
+     * @param  string $url
      * @return boolean
      */
     protected function getPlayListMessage($url){
@@ -198,9 +229,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $rule     = '|<img class="j-flag" src="(.*)"\/>\n<a title="(.*)" href="(.*)" class="msk">[\s\S]*?data-res-id="(.*)"'
                     .'[\s\S]*?<span class="nb">(.*)<\/span>[\s\S]*?<a title=[\s\S]*?<a title="(.*?)" href="(.*?)"|';
         $pageList = $this->pregMathAll($rule,$res);
-        // print_r($pageList);die;
         if(empty($pageList)){
-            return false;
+            return 'empty';
         }else{
             //歌单图片
             $imgList       = $pageList[0];
@@ -217,10 +247,11 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             //创建人空间链接
             $spaceLinkList = $pageList[6];
         }
+        $playlist = array();
         //数据先存储到数组中统一插入
         foreach ($listId as $k => $v) {
             //用redis来判断重复
-            if($this->Redis->set('playlistId',$v)){
+            if($this->Redis->sadd('playlistId',$v)){
                 $data = array('listId'       => $v,
                               'listTitle'    => $titleList[$k],
                               'listImg'      => $imgList[$k],
@@ -232,11 +263,13 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 $playList[$v] = $data;
             }
         }
-        //放入hash中
-        foreach ($playList as $playListMessage) {
-            $this->putSearialMessageIntoRedisHash($playListMessage,$this->cloudPlayListHashKeyPrefix);
+        if(!empty($playList)){
+            //放入hash中
+            foreach ($playList as $playListMessage) {
+                $this->putSearialMessageIntoRedisHash($playListMessage,$this->cloudPlayListHashKeyPrefix);
+            }
         }
- 
+
     }
 
     /**
@@ -305,6 +338,9 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         return $totalNum;
     }
 
+    /**
+    * 获取评论数大于10000的歌曲信息
+    */
     public function getMusicMessage($musicIdArray){
 
         if(empty($musicIdArray)){
@@ -318,7 +354,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $singerRule       = $this->getPregRule('singer');
         foreach ($musicIdArray as $musicId) {
             //把要抓取的音乐Id放入redis集合之中 集合可以自动排重
-            $insertMsg = $this->Redis->set('musicIdList',$musicId);
+            $insertMsg = $this->Redis->sadd('musicIdList',$musicId);
             //返回为int(1)则为未抓取过的
             if($insertMsg){
                 //抓取总评论数
@@ -326,7 +362,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 if(!empty($musicCommentMsg)){
                     //获得的数据为一个json格式的字符串
                     $commentArray       = json_decode($musicCommentMsg);
-                    //只要评论数大于10000的
+                    //只要评论数大于10000的$keyPrefix
                     $totalCommnetNum    = $commentArray->total;
                     if(intval($totalCommnetNum) > 10000){
                         //抓取歌曲信息
