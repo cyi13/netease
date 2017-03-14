@@ -155,7 +155,12 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                     $rule = '|<a href=".*" class="zpgi">(.*)<\/a>|';
                     $pageList = $this->pregMathAll($rule,$res)[0];
                     //最后一个分页
-                    $lastPageNum = array_pop($pageList);
+                    if(!empty($pageList)){
+                        $lastPageNum = array_pop($pageList);
+                    }else{
+                        //随便定义一个数 防止返回空的时候 造成错误
+                        $lastPageNum = 1750;
+                    }
                 }
                 //判断抓取的是不是最后一页
                 if(intval($offset) >= (intval($lastPageNum)-1)*35){
@@ -188,7 +193,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
     	}
 
       //在抓取一次没有抓取到到地址 没有第三次机会啦
-      while ($ture) {
+      while (ture) {
         $url = $this->Redis->rpop('emptyPageUrl');
         if(!$url){
           $this->getPlayListMessage($url);
@@ -303,8 +308,9 @@ class CrawlersRepository extends Common implements CrawlersInterface{
     }
 
     /**
-     * 添加url进队列
-     * @return [type] [description]
+     * 将url放入到队列中
+     * 
+     * @return integer
      */
     public function putUrlIntoQueue(){
 
@@ -422,7 +428,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      * 将redis hash中信息写入到数据库中
      *
      * 歌曲信息用crontab 定时执行
-     * @return [type] [description]
+     *  
+     * @return bollean
      */
     public function putMessageIntoDbFromRedis($Model,$keyPrefix){
 
