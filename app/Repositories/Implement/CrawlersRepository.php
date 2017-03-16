@@ -191,7 +191,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
     	}
 
       //在抓取一次没有抓取到到地址 没有第三次机会啦
-      while (ture) {
+      while (true) {
         $url = $this->Redis->rpop('emptyPageUrl');
         if(!$url){
           $this->getPlayListMessage($url);
