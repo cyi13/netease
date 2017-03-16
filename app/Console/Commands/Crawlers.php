@@ -49,6 +49,9 @@ class Crawlers extends Command
                 case 'musiclist':
                     $this->crawler->collectMusicMessage();
                     break;
+                case 'put':
+                    $this->crawler->putPlayListIntoMysqlFromRedis();
+                    break;
             }
         }
     }

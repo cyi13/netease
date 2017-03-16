@@ -141,7 +141,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             		continue;
             	}
             }
-            echo 'start cate'.$value['cateId'].'....';
+            echo 'start:'.$value['cateId'].'  ';
             $url  = $value['link'];
             //每次获取35个歌单
             for($offset = $lastOffset+35,$limit = 35;;$offset += 35){
@@ -182,8 +182,6 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 //记录一下进度
                 $executeData = array('cateId'=>$value['cateId'],'offset'=>$offset);
                 $this->Redis->hmset('lastCategoryCollectPoint',$executeData);
-                //在命令端输出一下信息
-                echo 'offset:'.$offset.'  ';
             }
 
             //下一个抓取的进度要重置
@@ -204,6 +202,14 @@ class CrawlersRepository extends Common implements CrawlersInterface{
       $this->putMessageIntoDbFromRedis($PlayListModel,$this->cloudPlayListHashKeyPrefix);
     }
 
+    /**
+    *手动写入信息
+    *@return bollean
+    */
+    public function putPlayListIntoMysqlFromRedis(){
+        $PlayListModel = new \App\Models\CloudPlayList;
+        $this->putMessageIntoDbFromRedis($PlayListModel,$this->cloudPlayListHashKeyPrefix);
+    }
     /**
      * 获取分类信息
      * @return array
@@ -400,6 +406,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                         $this->putSearialMessageIntoRedisHash($musicMsg,$this->cloudMusicMessageHashKeyPrefix);
                         // $this->putIntoFile('crawler/musicMsg',$singerString);die;
                     }
+                }else{
+                    $this->Redis->lpush('emptyId',$musicId);
                 }
                 // $this->putIntoFile('crawler/json.txt',$res);die;
             }
