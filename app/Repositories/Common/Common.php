@@ -140,8 +140,8 @@ class Common {
 
     /**
      * 转换字符串中的汉子为阿拉伯数字 暂时匹配一个万
-     * @param  [type] $string [description]
-     * @return [type]         [description]
+     * @param  string $string 
+     * @return string        
      */
     protected function chineseToNumber($string=''){
         if(empty($string)){
@@ -162,7 +162,7 @@ class Common {
                 return intval($number);
             }
         }
-        return $string;
+        return intval($string);
     }
 
     /**
