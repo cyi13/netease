@@ -296,7 +296,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             $this->putUrlIntoQueue();
         }
         
-        $MusicModel = new \App\Model\CloudMusicMessage;
+        $MusicModel = new \App\Models\CloudMusicMessage;
         while(true){
             //右边出队列
             $url   = $this->Redis->rpop('playlist');
@@ -364,6 +364,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         if(empty($musicIdArray)){
             return false;
         }
+        //判断是否已经抓取过
+        $musicIdArray = $this->checkMusicId($musicIdArray);
         //网易云音乐 音乐地址格式
         $musicLinkDomain  = self::COLUDDMIAN.'/song?id=';
         //匹配歌曲信息的正则表达式
@@ -372,47 +374,76 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $singerRule       = $this->getPregRule('singer');
         //用来存放抓取到的歌曲信息
         $musicMsg         = array();
-        foreach ($musicIdArray as $musicId) {
-            //抓取总评论数
-            $musicCommentMsg = $this->CloudMusicApi->musicCommentMsg($musicId);
-            if(!empty($musicCommentMsg)){
-                //获得的数据为一个json格式的字符串
-                $commentArray       = json_decode($musicCommentMsg);
-                //只要评论数大于10000的$keyPrefix
-                $totalCommnetNum    = $commentArray->total;
-                if(intval($totalCommnetNum) > 10000){
-                    //抓取歌曲信息
-                    $musicMessagePage   = $this->CloudMusicApi->musicMessage($musicId);
-                    //匹配歌曲信息
-                    $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
+        if(!empty($musicIdArray)){
+            foreach ($musicIdArray as $musicId) {
+                //抓取总评论数
+                $musicCommentMsg = $this->CloudMusicApi->musicCommentMsg($musicId);
+                if(!empty($musicCommentMsg)){
+                    //获得的数据为一个json格式的字符串
+                    $commentArray       = json_decode($musicCommentMsg);
+                    //只要评论数大于10000的$keyPrefix
+                    $totalCommnetNum    = $commentArray->total;
+                    if(intval($totalCommnetNum) > 10000){
+                        //抓取歌曲信息
+                        $musicMessagePage   = $this->CloudMusicApi->musicMessage($musicId);
+                        //匹配歌曲信息
+                        $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
 
-                    //歌唱者有可能会有多个合唱 进一步处理
-                    $singerString       = $musicMessageArray[1][0];
-                    $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
+                        //歌唱者有可能会有多个合唱 进一步处理
+                        $singerString       = $musicMessageArray[1][0];
+                        $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
 
-                    //歌手有多个 存为一个JSON
-                    foreach ($singerMessageArray[1] as $key=>$singerName){
-                        $array[$key]['singer']      = $singerName;
-                        $array[$key]['singerLink']  = self::COLUDDMIAN.$singerMessageArray[0][$key];
+                        //歌手有多个 存为一个JSON
+                        foreach ($singerMessageArray[1] as $key=>$singerName){
+                            $array[$key]['singer']      = $singerName;
+                            $array[$key]['singerLink']  = self::COLUDDMIAN.$singerMessageArray[0][$key];
+                        }
+                        $musicMsg[$musicId]['musicId']            = $musicId;
+                        $musicMsg[$musicId]['link']               = $musicLinkDomain.$musicId;
+                        $musicMsg[$musicId]['singerMessage']      = json_encode($array);
+                        //歌曲名
+                        $musicMsg[$musicId]['musicTitle']         = $musicMessageArray[0][0];
+                        //歌曲所属专辑链接
+                        $musicMsg[$musicId]['musicAlbumLink']     = self::COLUDDMIAN.$musicMessageArray[2][0];
+                        //歌曲所属专辑名称
+                        $musicMsg[$musicId]['musicAlbumTitle']    =  $musicMessageArray[3][0];
+                        //所有评论数
+                        $musicMsg[$musicId]['totalComment']       =  $totalCommnetNum;
+                        // $this->putIntoFile('crawler/musicMsg',$singerString);die;
                     }
-                    $musicMsg[$musicId]['musicId']            = $musicId;
-                    $musicMsg[$musicId]['link']               = $musicLinkDomain.$musicId;
-                    $musicMsg[$musicId]['singerMessage']      = json_encode($array);
-                    //歌曲名
-                    $musicMsg[$musicId]['musicTitle']         = $musicMessageArray[0][0];
-                    //歌曲所属专辑链接
-                    $musicMsg[$musicId]['musicAlbumLink']     = self::COLUDDMIAN.$musicMessageArray[2][0];
-                    //歌曲所属专辑名称
-                    $musicMsg[$musicId]['musicAlbumTitle']    =  $musicMessageArray[3][0];
-                    //所有评论数
-                    $musicMsg[$musicId]['totalComment']       =  $totalCommnetNum;
-                    // $this->putIntoFile('crawler/musicMsg',$singerString);die;
                 }
             }
+            //抓取过到放入到临时表中
+            $this->putMusicIdIntoDb($musicIdArray);
         }
         return $musicMsg;
     }
 
+    /**
+    * 验证乐曲Id是否已经抓取过
+    *
+    * @return array
+    */
+    public function checkMusicId($musicIdArray){
+        //从数据库中抓取数据验证
+        $res = DB::table('cloud_music_id_list')->where('musicId')->whereIn('musicId',$musicIdArray)->get()->toArray();
+        if(!empty($res)){
+            foreach($res as $value){
+                unset($musicIdArray[$value['musicId']]);
+            }
+        }
+        return $musicIdArray;
+    }
+
+    /**
+    * 抓取过到放入到临时表中
+    */
+    public function putMusicIdIntoDb($musicIdArray){
+        foreach($musicIdArray as $value){
+            $data = array('musicId'=>$value);
+            DB::table('cloud_music_id_list')->insert($data);
+        }
+    }
     /**
      * 将数据批量放入到数据库中
      * 
