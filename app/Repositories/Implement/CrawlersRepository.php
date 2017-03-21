@@ -256,20 +256,23 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             //创建人空间链接
             $spaceLinkList = $pageList[6];
         }
+        
         $playlist = array();
-        //数据先存储到数组中统一插入
-        foreach ($listId as $k => $v) {
-            //用redis来判断重复
-            if($this->Redis->sadd('playlistId',$v)){
-                $data = array('listId'       => $v,
-                              'listTitle'    => $titleList[$k],
-                              'listImg'      => $imgList[$k],
-                              'link'         => self::COLUDDMIAN.$hrefList[$k],
-                              'listenNum'    => $this->chineseToNumber($listenList[$k]),
-                              'by'           => $byList[$k],
-                              'spaceLink'    => self::COLUDDMIAN.$spaceLinkList[$k]);
-                //存放到数组里面 统一插入
-                $playList[$v] = $data;
+        if(!empty($listId)){
+            //数据先存储到数组中统一插入
+            foreach ($listId as $k => $v) {
+                //用redis来判断重复
+                if($this->Redis->sadd('playlistId',$v)){
+                    $data = array('listId'       => $v,
+                                'listTitle'    => $titleList[$k],
+                                'listImg'      => $imgList[$k],
+                                'link'         => self::COLUDDMIAN.$hrefList[$k],
+                                'listenNum'    => $this->chineseToNumber($listenList[$k]),
+                                'by'           => $byList[$k],
+                                'spaceLink'    => self::COLUDDMIAN.$spaceLinkList[$k]);
+                    //存放到数组里面 统一插入
+                    $playList[$v] = $data;
+                }
             }
         }
         return $playList;
