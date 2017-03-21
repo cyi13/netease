@@ -189,9 +189,9 @@ class Common {
 
     /**
      * 批量写入redis队列
-     * @param  array  $array    [description]
-     * @param  string $queueKey [description]
-     * @return [type]           [description]
+     * @param  array  $array    一维数组·
+     * @param  string $queueKey 队列的key
+     * @return int              队列的长度
      */
     protected function putArrayIntoQueue($array=array(),$queueKey='default'){
 
