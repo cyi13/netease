@@ -2,7 +2,7 @@
 @extends('public/head')
 
 @section('css')
-	<link rel="stylesheet" href="{{ asset('/css/index/index.css')}}">
+	<link rel="stylesheet" href="{{asset('/css/index/index.css')}}">
 @endsection
 
 @section('content')

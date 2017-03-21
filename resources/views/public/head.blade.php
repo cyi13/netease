@@ -16,7 +16,6 @@
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link href="{{asset('/css/common/index.css')}}" rel="stylesheet">
     {{-- css区域 --}}
     @yield('css')
   </head>

@@ -140,6 +140,7 @@ class Common {
 
     /**
      * 转换字符串中的汉子为阿拉伯数字 暂时匹配一个万
+     *
      * @param  string $string 
      * @return string         
      */
@@ -162,7 +163,7 @@ class Common {
                 return intval($number);
             }
         }
-        return $string;
+        return intval($string);
     }
 
     /**
@@ -189,9 +190,10 @@ class Common {
 
     /**
      * 批量写入redis队列
-     * @param  array  $array    
-     * @param  string $queueKey 
-     * @return bollean           
+     *
+     * @param  array  $array    一维数组·
+     * @param  string $queueKey 队列的key
+     * @return int              队列的长度
      */
     protected function putArrayIntoQueue($array=array(),$queueKey='default'){
 

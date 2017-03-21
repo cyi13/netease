@@ -133,6 +133,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         }else{
             $lastOffset = 0;
         }
+        //实例化一下模型类
+        $PlayListModel = new \App\Models\CloudPlayList;
         //遍历分类列表 根据列表中的链接地址去抓取歌单
         foreach ($categoryList as $value) {
         	//已经抓取过啦
@@ -155,7 +157,12 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                     $rule = '|<a href=".*" class="zpgi">(.*)<\/a>|';
                     $pageList = $this->pregMathAll($rule,$res)[0];
                     //最后一个分页
-                    $lastPageNum = array_pop($pageList);
+                    if(!empty($pageList)){
+                        $lastPageNum = array_pop($pageList);
+                    }else{
+                        //随便定义一个数 防止返回空的时候 造成错误
+                        $lastPageNum = 1750;
+                    }
                 }
                 //判断抓取的是不是最后一页
                 if(intval($offset) >= (intval($lastPageNum)-1)*35){
@@ -168,17 +175,19 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 $res    = $this->getPlayListMessage($newUrl);
                 //有可能没有返回信息 需要重新抓取
                 if($res == 'empty'){
+                    //左入队列
                     $this->Redis->lpush('emptyPageUrl',$newUrl);
+                }else{
+                    //存入到数据库
+                    $this->putMessageIntoDb($PlayListModel,$res,'listId');
                 }
                 //抓取两个界面sleep一次
                 if($offset%70 == 0){
-                    sleep(rand(1,3));
+                    sleep(rand(1,2));
                 }
                 //记录一下进度
                 $executeData = array('cateId'=>$value['cateId'],'offset'=>$offset);
                 $this->Redis->hmset('lastCategoryCollectPoint',$executeData);
-                //在命令端输出一下信息
-                echo 'offset:'.$offset.'  ';
             }
 
             //下一个抓取的进度要重置
@@ -188,15 +197,17 @@ class CrawlersRepository extends Common implements CrawlersInterface{
     	}
 
       //在抓取一次没有抓取到到地址 没有第三次机会啦
-      while ($ture) {
+      while (ture) {
         $url = $this->Redis->rpop('emptyPageUrl');
         if(!$url){
-          $this->getPlayListMessage($url);
+          $res = $this->getPlayListMessage($url);
+          if(!empty($res)){
+              $this->putMessageIntoDb($PlayListModel,$res);
+          }else{
+              break;
+          }
         }
       }
-      //结束的时候一起放入到数据库
-      $PlayListModel = new \App\Models\CloudPlayList;
-      $this->putMessageIntoDbFromRedis($PlayListModel,$this->cloudPlayListHashKeyPrefix);
     }
 
     /**
@@ -247,29 +258,23 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             //创建人空间链接
             $spaceLinkList = $pageList[6];
         }
-        $playlist = array();
-        //数据先存储到数组中统一插入
-        foreach ($listId as $k => $v) {
-            //用redis来判断重复
-            if($this->Redis->sadd('playlistId',$v)){
-                $data = array('listId'       => $v,
-                              'listTitle'    => $titleList[$k],
-                              'listImg'      => $imgList[$k],
-                              'link'         => self::COLUDDMIAN.$hrefList[$k],
-                              'listenNum'    => $this->chineseToNumber($listenList[$k]),
-                              'by'           => $byList[$k],
-                              'spaceLink'    => self::COLUDDMIAN.$spaceLinkList[$k]);
+
+        $playList = array();
+        if(!empty($listId)){
+            //数据先存储到数组中统一插入
+            foreach ($listId as $k => $v) {
+                $data = array('listId'     => $v,
+                            'listTitle'    => $titleList[$k],
+                            'listImg'      => $imgList[$k],
+                            'link'         => self::COLUDDMIAN.$hrefList[$k],
+                            'listenNum'    => $this->chineseToNumber($listenList[$k]),
+                            'by'           => $byList[$k],
+                            'spaceLink'    => self::COLUDDMIAN.$spaceLinkList[$k]);
                 //存放到数组里面 统一插入
                 $playList[$v] = $data;
             }
         }
-        if(!empty($playList)){
-            //放入hash中
-            foreach ($playList as $playListMessage) {
-                $this->putSearialMessageIntoRedisHash($playListMessage,$this->cloudPlayListHashKeyPrefix);
-            }
-        }
-
+        return $playList;
     }
 
     /**
@@ -284,6 +289,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         if(empty($this->Redis->llen('playlist'))){
             $this->putUrlIntoQueue();
         }
+        
+        $MusicModel = new \App\Models\CloudMusicMessage;
         while(true){
             //右边出队列
             $url   = $this->Redis->rpop('playlist');
@@ -298,13 +305,15 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             $array = $this->pregMathAll($rule,$res);
             $idArray = $array[0];
             //根据抓取的Id去抓取歌曲信息
-            $this->getMusicMessage($idArray);
+            $musicMsg = $this->getMusicMessage($idArray);
+            $this->putMessageIntoDb($MusicModel,$musicMsg,'musicId');
         }
     }
 
     /**
-     * 添加url进队列
-     * @return bollean
+     * 将url放入到队列中
+     * 
+     * @return integer
      */
     public function putUrlIntoQueue(){
 
@@ -340,6 +349,9 @@ class CrawlersRepository extends Common implements CrawlersInterface{
 
     /**
     * 获取评论数大于10000的歌曲信息
+    *
+    * @param array $musicIdArray 存到乐曲ID的一维数组
+    * @return array              返回存放乐曲信息的二维数组
     */
     public function getMusicMessage($musicIdArray){
 
@@ -352,54 +364,77 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $musicMessageRule = $this->getPregRule('musicMessage');
         //匹配歌手信息的正则表达式
         $singerRule       = $this->getPregRule('singer');
+        //用来存放抓取到的歌曲信息
+        $musicMsg         = array();
         foreach ($musicIdArray as $musicId) {
-            //把要抓取的音乐Id放入redis集合之中 集合可以自动排重
-            $insertMsg = $this->Redis->sadd('musicIdList',$musicId);
-            //返回为int(1)则为未抓取过的
-            if($insertMsg){
-                //抓取总评论数
-                $musicCommentMsg = $this->CloudMusicApi->musicCommentMsg($musicId);
-                if(!empty($musicCommentMsg)){
-                    //获得的数据为一个json格式的字符串
-                    $commentArray       = json_decode($musicCommentMsg);
-                    //只要评论数大于10000的$keyPrefix
-                    $totalCommnetNum    = $commentArray->total;
-                    if(intval($totalCommnetNum) > 10000){
-                        //抓取歌曲信息
-                        $musicMessagePage   = $this->CloudMusicApi->musicMessage($musicId);
-                        //匹配歌曲信息
-                        $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
+            //抓取总评论数
+            $musicCommentMsg = $this->CloudMusicApi->musicCommentMsg($musicId);
+            if(!empty($musicCommentMsg)){
+                //获得的数据为一个json格式的字符串
+                $commentArray       = json_decode($musicCommentMsg);
+                //只要评论数大于10000的$keyPrefix
+                $totalCommnetNum    = $commentArray->total;
+                if(intval($totalCommnetNum) > 10000){
+                    //抓取歌曲信息
+                    $musicMessagePage   = $this->CloudMusicApi->musicMessage($musicId);
+                    //匹配歌曲信息
+                    $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
 
-                        //歌唱者有可能会有多个合唱 进一步处理
-                        $singerString       = $musicMessageArray[1][0];
-                        $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
+                    //歌唱者有可能会有多个合唱 进一步处理
+                    $singerString       = $musicMessageArray[1][0];
+                    $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
 
-                        //歌手有多个 存为一个JSON
-                        foreach ($singerMessageArray[1] as $key=>$singerName){
-                            $array[$key]['singer']      = $singerName;
-                            $array[$key]['singerLink']  = self::COLUDDMIAN.$singerMessageArray[0][$key];
-                        }
-                        $musicMsg['musicId']            = $musicId;
-                        $musicMsg['link']               = $musicLinkDomain.$musicId;
-                        $musicMsg['singerMessage']      = json_encode($array);
-                        //歌曲名
-                        $musicMsg['musicTitle']         = $musicMessageArray[0][0];
-                        //歌曲所属专辑链接
-                        $musicMsg['musicAlbumLink']     = self::COLUDDMIAN.$musicMessageArray[2][0];
-                        //歌曲所属专辑名称
-                        $musicMsg['musicAlbumTitle']    =  $musicMessageArray[3][0];
-                        //所有评论数
-                        $musicMsg['totalComment']       =  $totalCommnetNum;
-                        //存储到hash中
-                        $this->putSearialMessageIntoRedisHash($musicMsg,$this->cloudMusicMessageHashKeyPrefix);
-                        // $this->putIntoFile('crawler/musicMsg',$singerString);die;
+                    //歌手有多个 存为一个JSON
+                    foreach ($singerMessageArray[1] as $key=>$singerName){
+                        $array[$key]['singer']      = $singerName;
+                        $array[$key]['singerLink']  = self::COLUDDMIAN.$singerMessageArray[0][$key];
                     }
+                    $musicMsg[$musicId]['musicId']            = $musicId;
+                    $musicMsg[$musicId]['link']               = $musicLinkDomain.$musicId;
+                    $musicMsg[$musicId]['singerMessage']      = json_encode($array);
+                    //歌曲名
+                    $musicMsg[$musicId]['musicTitle']         = $musicMessageArray[0][0];
+                    //歌曲所属专辑链接
+                    $musicMsg[$musicId]['musicAlbumLink']     = self::COLUDDMIAN.$musicMessageArray[2][0];
+                    //歌曲所属专辑名称
+                    $musicMsg[$musicId]['musicAlbumTitle']    =  $musicMessageArray[3][0];
+                    //所有评论数
+                    $musicMsg[$musicId]['totalComment']       =  $totalCommnetNum;
+                    // $this->putIntoFile('crawler/musicMsg',$singerString);die;
                 }
-                // $this->putIntoFile('crawler/json.txt',$res);die;
             }
-
+            sleep(rand(1,2));
         }
+        return $musicMsg;
     }
+
+    /**
+     * 将数据批量放入到数据库中
+     * 
+     * @param object $Model     数据模型对象
+     * @param array  $array     要插入的数据,数组的key值为$idColumn的数值
+     * @param string $idColumn  不允许重复的字段
+     * @return bool
+     */
+     public function putMessageIntoDb($Model,$array,$idColumn){
+        if(!empty($array)){
+            //先判断是否有重复的数据
+            $idList = array_keys($array);
+            $res = $Model->select($idColumn)->whereIn($idColumn,$idList)->get()->toArray();
+            if(!empty($res)){
+                foreach($res as $value){
+                    $id = $value[$idColumn];
+                    unset($array[$id]);
+                }
+            }
+            //使用事务的方式统一提交
+            DB::beginTransaction();
+            foreach($array as $value){
+                $Model->insert($value);
+            }
+            DB::commit();
+        }
+     }
 
     /**
      * 用hash结构来存储抓取到的数据
@@ -422,7 +457,8 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      * 将redis hash中信息写入到数据库中
      *
      * 歌曲信息用crontab 定时执行
-     * @return blloean
+     *  
+     * @return bollean
      */
     public function putMessageIntoDbFromRedis($Model,$keyPrefix){
 
