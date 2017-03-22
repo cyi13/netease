@@ -24,7 +24,7 @@ class CreateCloudPlayList extends Migration
                 $table->integer('listenNum')->nullable()->comment('歌单收听数');
                 $table->string('by')->nullable()->comment('创建人');
                 $table->string('spaceLink')->nullable()->comment('创建人的空间链接');
-                $table->integer('parentCateId')->comment('所属分类');
+                $table->integer('parentCateId')->default(0)->comment('所属分类');
                 $table->integer('collectNum')->nullable()->default(0)->comment('被收藏数');
                 $table->timestamps();
             });
