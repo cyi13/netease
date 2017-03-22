@@ -94,7 +94,7 @@ class Common {
      * 信息写入文件中
      * @return bollean
      */
-    protected function putIntoFile($filePath='',$msg=''){
+    protected function putIntoFile($filePath='',$msg='',$type=''){
 
         if(empty($filePath) && empty($msg)){
             return false;
@@ -115,7 +115,11 @@ class Common {
         }
 
         //开始推送数据进去 成功返回的是写入的字节数 失败则返回false
-        $res = file_put_contents($currentPath.$fileName,$msg);
+        if(empty($type)){
+            $res = file_put_contents($currentPath.$fileName,$msg);
+        }else{
+            $res = file_put_contents($currentPath.$fileName,$msg,$type);
+        }
 
         return $res;
     }
@@ -281,5 +285,16 @@ class Common {
             $newString .= $string[rand(0,$stringLength-1)];
         }
         return $newString;
+    }
+
+    /**
+     * 抓取记录及日志
+     * 
+     * @return void
+     */
+    public function log($message,$fileName = 'crawler.log'){
+        //加一个换行符
+        $fileName = $fileName.'\r\n';
+        $this->putIntoFile("log/{$fileName}",$message,'FILE_APPEND');
     }
 }
