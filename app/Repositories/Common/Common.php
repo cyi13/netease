@@ -140,8 +140,9 @@ class Common {
 
     /**
      * 转换字符串中的汉子为阿拉伯数字 暂时匹配一个万
+     *
      * @param  string $string 
-     * @return string        
+     * @return string         
      */
     protected function chineseToNumber($string=''){
         if(empty($string)){
@@ -189,6 +190,7 @@ class Common {
 
     /**
      * 批量写入redis队列
+     *
      * @param  array  $array    一维数组·
      * @param  string $queueKey 队列的key
      * @return int              队列的长度

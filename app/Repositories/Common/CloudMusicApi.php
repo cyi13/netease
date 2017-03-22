@@ -74,9 +74,9 @@ class CloudMusicApi extends Common{
     
     /**
      * aes加密
-     * @param  [type] $secretData [description]
-     * @param  [type] $secret     [description]
-     * @return [type]             [description]
+     * @param  string $secretData 
+     * @param  string $secret     
+     * @return string             
      */
     protected function aesEncrypt($secretData,$secret){
         $vi = '0102030405060708';
@@ -85,8 +85,8 @@ class CloudMusicApi extends Common{
 
     /**
      * rsa加密
-     * @param  [type] $text [description]
-     * @return [type]       [description]
+     * @param  string $text 
+     * @return string       
      */
     protected function rsaEncrypt($text){
         $rtext      = strrev(utf8_encode($text));
