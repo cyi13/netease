@@ -100,20 +100,19 @@ class Common {
             return false;
         }
         //文件放到 根目录storage下面
-        $fileRootPath = storage_path('app\public');
+        $fileRootPath = storage_path('app/public');
 
         $fileMsg = explode('/', $filePath);
         //最后一个为文件名
         $fileName = array_pop($fileMsg);
         //判断目录是否存在 否则建立目录
-        $currentPath = $fileRootPath.'\\';
+        $currentPath = $fileRootPath.'/';
         foreach ($fileMsg as $key => $value) {
-            $currentPath .= $value.'\\';
+            $currentPath .= $value.'/';
             if(!is_dir($currentPath)){
-                mkdir($currentPath,777);
+                mkdir($currentPath,0777);
             }
         }
-
         //开始推送数据进去 成功返回的是写入的字节数 失败则返回false
         if(empty($type)){
             $res = file_put_contents($currentPath.$fileName,$msg);
@@ -293,8 +292,8 @@ class Common {
      * @return void
      */
     public function log($message,$fileName = 'crawler.log'){
-        //加一个换行符
-        $fileName = $fileName.'\r\n';
-        $this->putIntoFile("log/{$fileName}",$message,'FILE_APPEND');
+        //加一个换行符   换行符必须用双引号才能生效
+        $message = $message."\r\n";
+        $this->putIntoFile("log/{$fileName}",$message,FILE_APPEND);
     }
 }

@@ -143,8 +143,9 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             		continue;
             	}
             }
-            echo 'start:'.$value['cateId'].'  ';
-            $url  = $value['link'];
+            //打个log
+            $this->log('start:'.$value['cateId']);
+            $url    = $value['link'];
             //每次获取35个歌单
             for($offset = $lastOffset+35,$limit = 35;;$offset += 35){
                 //生成地址
@@ -153,6 +154,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 if(!isset($lastPageNum)){
                     //抓取一次页码
                     $res = $this->sendCurl($newUrl);
+                    $this->log('url:'.$newUrl);
                     //没有分页抓取一次分页
                     $rule = '|<a href=".*" class="zpgi">(.*)<\/a>|';
                     $pageList = $this->pregMathAll($rule,$res)[0];
@@ -242,8 +244,9 @@ class CrawlersRepository extends Common implements CrawlersInterface{
      * @return boolean
      */
     protected function getPlayListMessage($url){
-
+        
         $res    = $this->sendCurl($url);
+        $this->log('playListUrl:'.$url);
         //开始抓取
         $rule     = '|<img class="j-flag" src="(.*)"\/>\n<a title="(.*)" href="(.*)" class="msk">[\s\S]*?data-res-id="(.*)"'
                     .'[\s\S]*?<span class="nb">(.*)<\/span>[\s\S]*?<a title=[\s\S]*?<a title="(.*?)" href="(.*?)"|';
@@ -299,6 +302,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         }
         
         $MusicModel = new \App\Models\CloudMusicMessage;
+        $this->log('start collect music message...');
         while(true){
             //右边出队列
             $url   = $this->Redis->rpop('playlist');
@@ -307,6 +311,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             }
             //请求页面信息
             $res   = $this->sendCurl($url);
+            $this->log('playListUrl:'.$url);
             //获取正则表达式
             $rule  = $this->getPregRule('musiclist');
             //正则匹配
@@ -380,22 +385,23 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             foreach ($musicIdArray as $musicId) {
                 //抓取总评论数
                 $musicCommentMsg = $this->CloudMusicApi->musicCommentMsg($musicId);
+                $this->log('musicId:'.$musicId);
                 if(!empty($musicCommentMsg)){
                     //获得的数据为一个json格式的字符串
                     $commentArray       = json_decode($musicCommentMsg);
                     //只要评论数大于10000的$keyPrefix
                     $totalCommnetNum    = $commentArray->total;
                     if(intval($totalCommnetNum) > 10000){
+                        $this->log('find one');
                         //抓取歌曲信息
                         $musicMessagePage   = $this->CloudMusicApi->musicMessage($musicId);
-                        if(!empty($musicMessagePage)){
-                            //匹配歌曲信息
-                            $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
-
+                        //匹配歌曲信息
+                        $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
+                        if(!empty($musicMessageArray)){
                             //歌唱者有可能会有多个合唱 进一步处理
                             $singerString       = $musicMessageArray[1][0];
                             $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
-
+                            
                             //歌手有多个 存为一个JSON
                             foreach ($singerMessageArray[1] as $key=>$singerName){
                                 $array[$key]['singer']      = $singerName;
@@ -414,10 +420,11 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                             $musicMsg[$musicId]['totalComment']       =  $totalCommnetNum;
                             // $this->putIntoFile('crawler/musicMsg',$singerString);die;
                         }else{
-                            //莫名原因没有抓取到的暂存到redis队列中
                             $this->Redis->lpush('emptyMusicMessageId',$musicId);
                         }
                     }
+                }else{
+                    $this->Redis->lpush('emptyMusicMessageId',$musicId);
                 }
                 sleep(rand(1,2));
             }      
@@ -483,7 +490,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
     /**
      * 用hash结构来存储抓取到的数据
      *
-     * 先用hash来存储数据 而后通过指定时间或者指定抓取多少数据之后统一存储到数据库
+     * 先用hash来存储数据 而后通过指定时间或者musicCommentMsg指定抓取多少数据之后统一存储到数据库
      *
      * @return string
      */
