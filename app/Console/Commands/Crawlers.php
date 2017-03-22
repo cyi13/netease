@@ -47,6 +47,8 @@ class Crawlers extends Command
                     $this->crawler->getPlayList();
                     break;
                 case 'musiclist':
+                    $this->crawler->getPlayList();
+                    sleep(2);
                     $this->crawler->collectMusicMessage();
                     break;
                 case 'put':
