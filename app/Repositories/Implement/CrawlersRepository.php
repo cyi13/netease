@@ -388,30 +388,35 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                     if(intval($totalCommnetNum) > 10000){
                         //抓取歌曲信息
                         $musicMessagePage   = $this->CloudMusicApi->musicMessage($musicId);
-                        //匹配歌曲信息
-                        $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
+                        if(!empty($musicMessagePage)){
+                            //匹配歌曲信息
+                            $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
 
-                        //歌唱者有可能会有多个合唱 进一步处理
-                        $singerString       = $musicMessageArray[1][0];
-                        $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
+                            //歌唱者有可能会有多个合唱 进一步处理
+                            $singerString       = $musicMessageArray[1][0];
+                            $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
 
-                        //歌手有多个 存为一个JSON
-                        foreach ($singerMessageArray[1] as $key=>$singerName){
-                            $array[$key]['singer']      = $singerName;
-                            $array[$key]['singerLink']  = self::COLUDDMIAN.$singerMessageArray[0][$key];
+                            //歌手有多个 存为一个JSON
+                            foreach ($singerMessageArray[1] as $key=>$singerName){
+                                $array[$key]['singer']      = $singerName;
+                                $array[$key]['singerLink']  = self::COLUDDMIAN.$singerMessageArray[0][$key];
+                            }
+                            $musicMsg[$musicId]['musicId']            = $musicId;
+                            $musicMsg[$musicId]['link']               = $musicLinkDomain.$musicId;
+                            $musicMsg[$musicId]['singerMessage']      = json_encode($array);
+                            //歌曲名
+                            $musicMsg[$musicId]['musicTitle']         = $musicMessageArray[0][0];
+                            //歌曲所属专辑链接
+                            $musicMsg[$musicId]['musicAlbumLink']     = self::COLUDDMIAN.$musicMessageArray[2][0];
+                            //歌曲所属专辑名称
+                            $musicMsg[$musicId]['musicAlbumTitle']    =  $musicMessageArray[3][0];
+                            //所有评论数
+                            $musicMsg[$musicId]['totalComment']       =  $totalCommnetNum;
+                            // $this->putIntoFile('crawler/musicMsg',$singerString);die;
+                        }else{
+                            //莫名原因没有抓取到的暂存到redis队列中
+                            $this->Redis->lpush('emptyMusicMessageId',$musicId);
                         }
-                        $musicMsg[$musicId]['musicId']            = $musicId;
-                        $musicMsg[$musicId]['link']               = $musicLinkDomain.$musicId;
-                        $musicMsg[$musicId]['singerMessage']      = json_encode($array);
-                        //歌曲名
-                        $musicMsg[$musicId]['musicTitle']         = $musicMessageArray[0][0];
-                        //歌曲所属专辑链接
-                        $musicMsg[$musicId]['musicAlbumLink']     = self::COLUDDMIAN.$musicMessageArray[2][0];
-                        //歌曲所属专辑名称
-                        $musicMsg[$musicId]['musicAlbumTitle']    =  $musicMessageArray[3][0];
-                        //所有评论数
-                        $musicMsg[$musicId]['totalComment']       =  $totalCommnetNum;
-                        // $this->putIntoFile('crawler/musicMsg',$singerString);die;
                     }
                 }
                 sleep(rand(1,2));

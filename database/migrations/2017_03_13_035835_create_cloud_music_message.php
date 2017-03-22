@@ -20,7 +20,7 @@ class CreateCloudMusicMessage extends Migration
             $table->string('link')->nullable()->comment('链接地址');
             $table->string('musicAlbumTitle')->nullable()->comment('专辑名称');
             $table->string('musicAlbumLink')->nullable()->comment('专辑链接');
-            $table->string('singerMessage')->nullable()->comment('歌手信息');
+            $table->string('singerMessage',1000)->nullable()->comment('歌手信息');
             $table->integer('totalComment')->default(0)->comment('总评论数');
         });
     }
