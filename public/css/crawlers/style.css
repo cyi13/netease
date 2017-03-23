@@ -1,0 +1,17 @@
+body{
+    background: #f9f9f9
+}
+.index-body{
+    margin: 3rem;
+}
+.table-field{
+    margin-top: 4rem;
+}
+.table{
+    font-size: 1.6rem;
+    width: 70%;
+}
+.table  th{
+    border-bottom: 2px solid #ddd;
+    border-top: none !important;
+}

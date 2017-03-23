@@ -15,4 +15,4 @@
 //     return view('welcome');
 // });
 Route::get('/','indexController@index');
-Route::get('/Crawlers/cloudMusic','CrawlersController@cloudMusic');
+Route::get('/Crawlers/cloudMusic','CrawlersController@cloudMusicMessage');

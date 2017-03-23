@@ -6,13 +6,13 @@ use App\Repositories\Interfaces\CrawlersInterface;
 use Illuminate\Http\Request;
 
 class CrawlersController extends Controller
-{
-    public function __construct(CrawlersInterface $crawlers){
-        $this->craws = $crawlers;
+{   
+    public function __construct(){
+
     }
 
-    public function cloudMusic(){
-        $res = $this->craws->getPlayList();
-        print_r($res);
+    public function cloudMusicMessage(){
+        
+        return view('crawlers/index',array('title'=>'网易云音乐'));
     }
 }

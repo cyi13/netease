@@ -12,8 +12,8 @@ class indexController extends Controller{
 	public function index(){
 		
 	    //查找出所有的function信息
-	    $list = \App\Models\FunctionList::select('id','functionName','functionAddress')->get();
-
-	    return view('index/index',array('title'=>'主页'),array('list'=>$list));
+	    // $list = \App\Models\FunctionList::select('id','functionName','functionAddress')->get();
+		$list = array();
+	    return view('index/index',array('title'=>'主页','list'=>$list));
 	}
 }

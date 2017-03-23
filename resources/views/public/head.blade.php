@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>{{$netTitle}}--{{$title}}</title>
+    <title>{{$title}}--{{$netTitle}}</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- font-awesome -->
@@ -21,25 +21,7 @@
     @yield('css')
   </head>
   <body>
-    <div class="site-header jumbotron">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12">
-            <h1>FUNCTION</h1>
-            <p>一些小工具，仅供学习使用<br></p><br/><br/>
-            <form class="" role="search">
-              <div class="form-group">
-                <input type="text" class="form-control search clearable" placeholder="搜索工具名称，如：计算器">
-                <span class="fa fa-search"></span>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="site-body">
-		@yield('content')
-    </div>
+      @yield('content')
 	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 	    <!-- Include all compiled plugins (below), or include individual files as needed -->

@@ -9,4 +9,8 @@ class CloudMusicMessage extends Model
 	protected $table      = 'cloud_music_message';
 	protected $primaryKey = 'id';
 	protected $guarded    = array();
+
+	public function getMusicList(){
+		
+	}
 }
