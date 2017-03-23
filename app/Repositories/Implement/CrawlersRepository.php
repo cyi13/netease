@@ -202,7 +202,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         if(!$url){
           $res = $this->getPlayListMessage($url);
           if(!empty($res)){
-              $this->putMessageIntoDb($PlayListModel,$res);
+              $this->putMessageIntoDb($PlayListModel,$res,'listId');
           }else{
               break;
           }
