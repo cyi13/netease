@@ -205,9 +205,9 @@ class CrawlersRepository extends Common implements CrawlersInterface{
           $res = $this->getPlayListMessage($url);
           if(!empty($res) && $res != 'empty'){
               $this->putMessageIntoDb($PlayListModel,$res,'listId');
-          }else{
-              break;
           }
+        }else{
+              return 'stop';
         }
       }
     }
@@ -307,7 +307,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             //右边出队列
             $url   = $this->Redis->rpop('playlist');
             if(empty($url)){
-                break;
+                return 'stop';
             }
             //请求页面信息
             $res   = $this->sendCurl($url);
