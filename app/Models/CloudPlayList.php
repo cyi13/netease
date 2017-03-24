@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class CloudPlayList extends Model
+class CloudPlayList extends Common
 {
 	protected $table   = 'cloud_play_list';
 	protected $primaryKey = 'id';

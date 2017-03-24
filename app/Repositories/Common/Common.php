@@ -11,12 +11,31 @@ class Common {
     /**
      * 正则表达式数组
      */
-    protected $rule=array();
-
-    protected function __construct(){
+    protected $rule = array();
+    protected $modelMap = array();
+    public function __construct(){
         //连接redis
-        // $this->Redis = new RedisDb;
-        $this->Redis = $this->Redis();
+        $this->Redis = new RedisDb;
+        // $this->Redis = $this->Redis();
+    }
+
+    /**
+     * 获取数据模型
+     * 
+     * @param string $modelName
+     * @return object
+     */
+    public function getModel($modelName){
+        if(is_string($modelName)){
+            if(array_key_exists($modelName,$this->modelMap)){
+                return $this->modelMap[$modelName];
+            }else{
+                $newModelName = '\\App\\Models\\'.$modelName;
+                $model        = new $newModelName;
+                $this->modelMap[$modelName] = $model;
+                return $model;
+            }
+        }
     }
     /**
      * curl方式获取目标地址的内容

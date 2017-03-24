@@ -15,32 +15,35 @@
                     <table class='table table-striped table-hover'>
                         <tr>
                             <th style="width:5%">#</th>
-                            <th style="width:20%">标题</th>
-                            <th style="width:20%">演唱者</th>
-                            <th style="width:20%">评论数</th>
-                            <th style="width:35%">链接地址</th>
+                            <th style="width:15%">标题</th>
+                            <th style="width:25%">演唱者</th>
+                            <th style="width:20%">专辑</th>
+                            <th style="width:10%">评论数</th>
+                            <th style="width:25%">链接地址</th>
                         </tr>
+                        @foreach($musicList as $list)
                         <tr>
-                            <td>1</td>
-                            <td>告白气球</td>
-                            <td>周杰伦</td>
-                            <td>10000</td>
-                            <td>http://www.baidu.com</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>告白气球</td>
-                            <td>http://www.baidu.com</td>
-                            <td>周杰伦</td>
-                            <td>10000</td>
+                            <td>{{ $loop->iteration  }}</td>
+                            <td>{{ $list->musicTitle }}</td>
+                            <td>
+                             @foreach($list->singerMessage as $singerMessage)   
+                                <a href="{{ $singerMessage->singerLink }}" target="_blank" title="{{ $singerMessage->singer }}">
+                                    {{$singerMessage->singer}}
+                                    @if($loop->remaining != 0) / @endif
+                                </a>
+                             @endforeach                            
+                            </td>
+                            <td>
+                                <a href="{{ $list->musicAlbumLink}}" target='_blank' title="{{ $list->musicAlbumTitle }}">
+                                    {{ $list->musicAlbumTitle }}
+                                </a>
+                            </td>
+                            <td>{{ $list->totalComment }}</td>
+                            <td>
+                                <a href="{{ $list->link }}">{{ $list->link }}</a>
+                            </td>
                         </tr>   
-                        <tr>
-                            <td>3</td>
-                            <td>告白气球</td>
-                            <td>http://www.baidu.com</td>
-                            <td>周杰伦</td>
-                            <td>10000</td>
-                        </tr>                                             
+                        @endforeach                                        
                     </table>
                 </div>
             </div> 
