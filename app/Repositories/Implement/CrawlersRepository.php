@@ -430,7 +430,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 }else{
                     $this->Redis->lpush('emptyMusicMessageId',$musicId);
                 }
-                sleep(rand(1,2));
+                usleep(200000);
             }      
             //抓取过到放入到临时表中
             $this->putMusicIdIntoDb($musicIdArray);
