@@ -15,8 +15,8 @@ class Common {
     protected $modelMap = array();
     public function __construct(){
         //连接redis
-        $this->Redis = new RedisDb;
-        // $this->Redis = $this->Redis();
+        // $this->Redis = new RedisDb;
+        $this->Redis = $this->Redis();
     }
 
     /**

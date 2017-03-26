@@ -13,19 +13,22 @@ class CrawlersMessageController extends CommonController{
 
     public function __construct(CrawlersMessageInterface $crawlerMeg){
         parent::__construct();
+        view()->share('title','网易云音乐');
         $this->crawlerMsg = $crawlerMeg;
     }
 
-    public function cloudMusicMessage(){
+    public function getCloudMusicMessage(){
         //获取歌曲列表
-        $list = $this->crawlerMsg->getMusicListMessage();
-        if(!empty($list)){
-            //处理一下歌手信息
-            foreach($list as $value){
-                $value->singerMessage = json_decode($value->singerMessage);
-            }
-        }
-        $viewData = array('title'=>'网易云音乐','musicList'=>$list);
+        $list     = $this->crawlerMsg->getMusicListMessage();
+        $viewData['musicList'] = $list;
         return view('crawlers/index',$viewData);
+    }
+
+    public function getCloudMusicMessagePage(Request $request){
+        if($request->ajax()){
+            $pageNum = $request->input('pageNum');
+            $list    = $this->crawlerMsg->getMusicListMessage($pageNum);
+            return response()->json($list);
+        }
     }
 }

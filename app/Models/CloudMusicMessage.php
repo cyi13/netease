@@ -8,11 +8,21 @@ class CloudMusicMessage extends Common
 	protected $primaryKey = 'id';
 	protected $guarded    = array();
 
-	public function getMusicListMessage(array $where=array(),$offset=0,$limit=15){
+	public function getMusicListMessage($offset=0,array $where=array(),$limit=15){
 		if(empty($where)){
-			$newModel = $this->orderBy('totalComment','desc')->offset($offset)->limit($limit)->get();
-			$list 	  = $this->queryByPage($newModel,$offset,$limit);
+			$list = $this->orderBy('totalComment','desc')->offset($offset)->limit($limit)->get();
 			return $list;
 		}
+	}
+
+	public function getTotalCount(array $where=array()){
+		//用md5加密的方式
+		$string 	= md5(json_encode($where));
+		$totalCount = $this->Redis()->hget('cloudMusicMessage',$string);
+		if(!$totalCount){
+			$totalCount = $this->where($where)->count();
+			$this->Redis()->hset('cloudMusicMessage',$string,$totalCount);
+		}
+		return $totalCount;
 	}
 }
