@@ -390,7 +390,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                     //获得的数据为一个json格式的字符串
                     $commentArray       = json_decode($musicCommentMsg);
                     //只要评论数大于10000的$keyPrefix
-                    $this->log(json_encode($commentArray));
+                    // $this->log(json_encode($commentArray));
                     $totalCommnetNum    = $commentArray->total;
                     if(intval($totalCommnetNum) > 10000){
                         $this->log('find one');
