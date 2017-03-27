@@ -16,18 +16,18 @@
                         <thead>
                             <tr>
                                 <th style="width:3%">#</th>
-                                <th style="width:15%">标题</th>
-                                <th style="width:25%">演唱者</th>
-                                <th style="width:20%">专辑</th>
-                                <th style="width:10%">评论数</th>
-                                <th style="width:27%">链接地址</th>
+                                <th>标题</th>
+                                <th>演唱者</th>
+                                <th>专辑</th>
+                                <th>评论数</th>
+                                {{--<th style="width:27%">链接地址</th>--}}
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($musicList as $list)
                             <tr>
                                 <td>{{ $loop->iteration  }}</td>
-                                <td>{{ $list->musicTitle }}</td>
+                                <td><a href="{{ $list->link }}" target="_blank" title="{{ $list->musicTitle }}"> {{ $list->musicTitle }}</a></td>
                                 <td>
                                 @foreach($list->singerMessage as $singerMessage)   
                                     <a href="{{ $singerMessage->singerLink }}" target="_blank" title="{{ $singerMessage->singer }}">
@@ -42,9 +42,9 @@
                                     </a>
                                 </td>
                                 <td>{{ $list->totalComment }}</td>
-                                <td>
-                                    <a href="{{ $list->link }}" target='_blank'>{{ $list->link }}</a>
-                                </td>
+                                {{--<td>--}}
+                                    {{--<a href="{{ $list->link }}" target='_blank'>{{ $list->link }}</a>--}}
+                                {{--</td>--}}
                             </tr>   
                             @endforeach   
                         </tbody>                                     
@@ -225,12 +225,12 @@
                     $.each(data,function(key,value){
                         var tr                  = $('<tr></tr>');
                         var keyArea             = '<td>'+ (key+1) +'</td>';
-                        var musicTitleArea      = '<td>'+ value.musicTitle +'</td>';
+                        var musicTitleArea      = '<td><a href="'+ value.link +'" target="_blank" title="'+ value.musicTitle +'">'+ value.musicTitle +'</a></td>';
+//                        var musicTitleArea      = '<td>'+ value.musicTitle +'</td>';
                         var musicAlbumTitleArea = '<td><a href="'+ value.musicAlbumLink +'" target="_blank"'
                                                   +'title="'+ value.musicAlbumTitle +'">'+ value.musicAlbumTitle + '</td>';
                         var commentArea         = '<td>'+ value.totalComment +'</td>';
-                        var linkArea            = '<td><a href="'+ value.link +'" target="_blank" title="'+ value.musicTitle +'">'
-                                                  + value.link+'</a></td>';
+                        {{--<td><a href="{{ $list->link }}" target="_blank" title="{{ $list->musicTitle }}"> {{ $list->musicTitle }}</a></td>--}}
                         var singleArea          = '<td>';
                         var length              = value.singerMessage.length;
                         $.each(value.singerMessage,function(k,v){
@@ -240,7 +240,7 @@
                                 singleArea += '<a href="'+v.singerLink+'" target="_blank" title="'+v.singer+'">'+v.singer+'</a>/';
                             }
                         });
-                        tr.append(keyArea+musicTitleArea+singleArea+musicAlbumTitleArea+commentArea+linkArea);
+                        tr.append(keyArea+musicTitleArea+singleArea+musicAlbumTitleArea+commentArea);
                         $('.table tbody').append(tr);
                     })
                 },'json');
