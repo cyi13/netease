@@ -17,12 +17,12 @@ class CloudMusicMessage extends Common
 
 	public function getTotalCount(array $where=array()){
 		//用md5加密的方式
-		$string 	= md5(json_encode($where));
-		$totalCount = $this->Redis()->hget('cloudMusicMessage',$string);
-		if(!$totalCount){
+//		$string 	= md5(json_encode($where));
+//		$totalCount = $this->Redis()->hget('cloudMusicMessage',$string);
+//		if(!$totalCount){
 			$totalCount = $this->where($where)->count();
-			$this->Redis()->hset('cloudMusicMessage',$string,$totalCount);
-		}
+//			$this->Redis()->hset('cloudMusicMessage',$string,$totalCount);
+//		}
 		return $totalCount;
 	}
 }
