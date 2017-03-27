@@ -7,7 +7,30 @@
         <div class='container-fluid'>
             <div class='row'>
                 <div class='col-xs-12'>
-                    <h2>测试字体非常大</h2>
+                    <h3>网易云音乐评论数大于一万的歌曲</h3>
+                </div>
+            </div>
+            <div class="row search-field">
+                <div class="col-xs-3 col-md-offset-1">
+                    <from id="auto-form" name="form" action="{{ route('cloudMusicPage') }}">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="search-title">歌曲名</span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="search-menu" href="javascript:void(0);" data-name="musicTitle">歌曲名</a></li>
+                                    <li><a class="search-menu" href="javascript:void(0);" data-name="singer">歌手</a></li>
+                                </ul>
+                            </div>
+                             <input type="text" name="musicTitle" id="search-input" class="form-control" aria-describedby="sizing-addon1">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" id="submit-button" type="submit"><i class="fa fa-search"></i></button>
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            </span>
+                        </div>
+                    </from>
                 </div>
             </div>
             <div class='row table-field'>
@@ -53,30 +76,30 @@
             </div> 
         </div>
         @if($totalPageNum > 1)
-        <input id="pageUrl" type="hidden" data-url="{{ route('cloudMusicPage') }}" data-token="{{ csrf_token() }}" />
+         <input id="pageUrl" type="hidden" data-url="{{ route('cloudMusicPage') }}" data-token="{{ csrf_token() }}" data-max="{{ $totalPageNum }}"/>
         <div class='row'>
             <div class='col-xs-12 col-md-offset-1'>
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                         <li>
-                        <a class="previous" href="javascript::void();" aria-label="Previous">
+                        <a class="previous" href="javascript:void(0);" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                         </li>
                         @for($i=1;$i <  $totalPageNum;$i++)
-                            @if($i > 15)
-                                <li><a class="bypass" href="javascript::void();">...</a></li>
-                                <li><a class="page lastPage" href="javascript::void();">{{ $totalPageNum }}</a></li>
+                            @if($i > 13)
+                                <li><a class="bypass" href="javascript:void(0);">...</a></li>
+                                <li><a class="page lastPage" href="javascript:void(0);">{{ $totalPageNum }}</a></li>
                                 @break;
                             @elseif($i==1)
-                                <li class="active"><a class="page firstPage" href="javascript::void();">{{ $i }}</a></li>
+                                <li class="active"><a class="page firstPage" href="javascript:void(0);">{{ $i }}</a></li>
                             @else
-                                <li><a class="page" href="javascript::void();">{{ $i }}</a></li>
+                                <li><a class="page" href="javascript:void(0);">{{ $i }}</a></li>
                             @endif
                             
                         @endfor 
                         <li>
-                        <a class="next" href="javascript::void();" aria-label="Next">
+                        <a class="next" href="javascript:void(0);" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                         </li>
@@ -87,11 +110,32 @@
     </div>w
     @endif
 @endsection
+
 @section('javascript')
     <script>
         $(function(){
+            $('.search-menu').click(function(){
+                var name  = $(this).attr('data-name');
+                var title = $(this).text();
+                $('#search-input').prop('name',name);
+                $('#search-title').text(title);
+            });
+            $('#submit-button').click(function() {
+                $('#auto-form').submit();
+            });
+            $('#auto-form').submit(function(){
+                var url         = $(this).attr('action');
+                var name        = $('#search-input').val();
+                var token       = $('input[name="_token"]').eq(0).val();
+                var searchName  = $('#search-input').prop('name');
+                var data        = {name:name,'searchName':searchName,'_token':token};
+                reCratePage(url,data);
+                return false;
+            })
+
             //作为全局变量
-            var maxPageNum   = parseInt($('.lastPage').text());
+            var maxPageNum   = parseInt($('#pageUrl').attr('data-max'));
+            var pageShowNum  = 15;
             //跳转页数
             $(document).on('click','.page',function(){
                 var pageNum = parseInt($(this).text());
@@ -163,50 +207,48 @@
                 }
                 changeCurrentPosition(nextObject);
             });
-            //首页
-
-            //末页
-
             //重新生成分页页数
             function recreatePage(currentPageNum,nextPageNum,action){
                 //生成页数
-                var pageNumArray = new Array();
+
                 $('.pagination').empty();
-                var pageArea = '<li><a class="previous" href="javascript::void();" aria-label="Previous">'
+                var pageArea = '<li><a class="previous" href="javascript:void(0);" aria-label="Previous">'
                             +'<span aria-hidden="true">&laquo;</span></a></li>';
-                pageArea += '<li><a class="page firstPage" href="javascript::void();">1</a></li>';
-                //总共17个位置
-                if(nextPageNum <= 15 && action=='prev'){
-                    for(var i=2;i<=15;i++){
-                        pageArea += '<li><a class="page" href="javascript::void();">'+ i +'</a></li>';
+                //总共pageShowNum个位置  17 除上一页和下一页
+                pageArea += '<li><a class="page firstPage" href="javascript:void(0);">1</a></li>';
+                var remainPageNum = pageShowNum-2;
+                if(nextPageNum <= remainPageNum && action == 'prev'){
+                    for(var i=2;i<=remainPageNum;i++){
+                        pageArea += '<li><a class="page" href="javascript:void(0);">'+ i +'</a></li>';
                     }    
-                    pageArea += '<li><a class="bypass" href="javascript::void();">...</a></li>';  
-                }else if(nextPageNum >= maxPageNum-15){
-                    pageArea += '<li><a class="bypass" href="javascript::void();">...</a></li>';                               
-                    for(var i=maxPageNum-15;i<maxPageNum;i++){
-                        pageArea += '<li><a class="page" href="javascript::void();">'+ i +'</a></li>';
+                    pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
+                }else if(nextPageNum >= maxPageNum-remainPageNum){
+                    pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
+                    for(var i=maxPageNum-remainPageNum+1;i<maxPageNum;i++){
+                        pageArea += '<li><a class="page" href="javascript:void(0);">'+ i +'</a></li>';
                     }                     
                 }else{
-                    
-                    pageArea += '<li><a class="bypass" href="javascript::void();">...</a></li>';
+                    remainPageNum -= 2;
+                    pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
+
                     switch(action){
                         case 'prev':
-                            var startPageNum = nextPageNum-13;
+                            var startPageNum = nextPageNum-remainPageNum;
                             var endPageNum   = nextPageNum;
                             break;
                         case 'next':
                             var startPageNum = nextPageNum;
-                            var endPageNum   = nextPageNum+13;
+                            var endPageNum   = nextPageNum+remainPageNum;
                             break;
                     }
                     for(var i = startPageNum;i<=endPageNum;i++){
-                        pageArea += '<li><a class="page" href="javascript::void();">'+ i +'</a></li>';
+                        pageArea += '<li><a class="page" href="javascript:void(0);">'+ i +'</a></li>';
                     }
-                    pageArea += '<li><a class="bypass" href="javascript::void();">...</a></li>';  
+                    pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
                                        
                 }
-                pageArea += '<li><a class="page lastPage" href="javascript::void();">'+ maxPageNum +'</a></li>'; 
-                pageArea += '<li><a class="next" href="javascript::void();" aria-label="Next">'
+                pageArea += '<li><a class="page lastPage" href="javascript:void(0);">'+ maxPageNum +'</a></li>';
+                pageArea += '<li><a class="next" href="javascript:void(0);" aria-label="Next">'
                              +'<span aria-hidden="true">&raquo;</span></a></li>';
                  $('.pagination').append(pageArea);
             }
@@ -220,6 +262,10 @@
                 var url = $('#pageUrl').attr('data-url');
                 var token = $('#pageUrl').attr('data-token');
                 var data   = {'pageNum':pageNum,'_token':token};
+                reCratePage(url,data);
+            }
+            //重新生成界面
+            function reCratePage(url,data){
                 $.post(url,data,function(data){
                     $('.table tbody').empty();
                     $.each(data,function(key,value){
@@ -228,9 +274,9 @@
                         var musicTitleArea      = '<td><a href="'+ value.link +'" target="_blank" title="'+ value.musicTitle +'">'+ value.musicTitle +'</a></td>';
 //                        var musicTitleArea      = '<td>'+ value.musicTitle +'</td>';
                         var musicAlbumTitleArea = '<td><a href="'+ value.musicAlbumLink +'" target="_blank"'
-                                                  +'title="'+ value.musicAlbumTitle +'">'+ value.musicAlbumTitle + '</td>';
+                            +'title="'+ value.musicAlbumTitle +'">'+ value.musicAlbumTitle + '</td>';
                         var commentArea         = '<td>'+ value.totalComment +'</td>';
-                        {{--<td><a href="{{ $list->link }}" target="_blank" title="{{ $list->musicTitle }}"> {{ $list->musicTitle }}</a></td>--}}
+                                {{--<td><a href="{{ $list->link }}" target="_blank" title="{{ $list->musicTitle }}"> {{ $list->musicTitle }}</a></td>--}}
                         var singleArea          = '<td>';
                         var length              = value.singerMessage.length;
                         $.each(value.singerMessage,function(k,v){

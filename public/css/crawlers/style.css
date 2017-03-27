@@ -4,8 +4,9 @@ body{
 .index-body{
     margin: 3rem;
 }
-.table-field{
+.search-field{
     margin-top: 4rem;
+    margin-bottom: 1rem;
 }
 .table{
     font-size: 1.6rem;

@@ -26,8 +26,8 @@ class CrawlersMessageController extends CommonController{
 
     public function getCloudMusicMessagePage(Request $request){
         if($request->ajax()){
-            $pageNum = $request->input('pageNum');
-            $list    = $this->crawlerMsg->getMusicListMessage($pageNum);
+            $data  = $request->all();
+            $list  = $this->crawlerMsg->getMusicListMessage($data);
             return response()->json($list);
         }
     }
