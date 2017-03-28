@@ -410,7 +410,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                                 }
                                 $musicMsg[$musicId]['musicId']            = $musicId;
                                 $musicMsg[$musicId]['link']               = $musicLinkDomain.$musicId;
-                                $musicMsg[$musicId]['singerMessage']      = json_encode($array);
+                                $musicMsg[$musicId]['singerMessage']      = json_encode($array,JSON_UNESCAPED_UNICODE);
                                 //歌曲名
                                 $musicMsg[$musicId]['musicTitle']         = $musicMessageArray[0][0];
                                 //歌曲所属专辑链接
