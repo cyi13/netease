@@ -28,8 +28,10 @@ class CrawlersMessageRepository extends Common Implements CrawlersMessageInterfa
                 $value->singerMessage = json_decode($value->singerMessage);
             }
         }
-        $this->page($MusicModel,$where);
-        return $list;
+        $totalCount = $this->page($MusicModel,$where);
+        $array['musicList']  = $list;
+        $array['totalPageNum'] = $totalCount;
+        return $array;
     }
     
     /**
@@ -39,8 +41,8 @@ class CrawlersMessageRepository extends Common Implements CrawlersMessageInterfa
         $totalCount = $model->getTotalCount($where);
         if($totalCount){
             $totalPageNum = ceil($totalCount/$this->limit);
-            view()->share('totalPageNum',$totalPageNum);
         }
+        return $totalPageNum;
     }
     
 }

@@ -47,36 +47,35 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($musicList as $list)
-                            <tr>
-                                <td>{{ $loop->iteration  }}</td>
-                                <td><a href="{{ $list->link }}" target="_blank" title="{{ $list->musicTitle }}"> {{ $list->musicTitle }}</a></td>
-                                <td>
-                                @foreach($list->singerMessage as $singerMessage)   
-                                    <a href="{{ $singerMessage->singerLink }}" target="_blank" title="{{ $singerMessage->singer }}">
-                                        {{$singerMessage->singer}}
-                                        @if($loop->remaining != 0) / @endif
-                                    </a>
-                                @endforeach                            
-                                </td>
-                                <td>
-                                    <a href="{{ $list->musicAlbumLink}}" target='_blank' title="{{ $list->musicAlbumTitle }}">
-                                        {{ $list->musicAlbumTitle }}
-                                    </a>
-                                </td>
-                                <td>{{ $list->totalComment }}</td>
+                            {{--@foreach($musicList as $list)--}}
+                            {{--<tr>--}}
+                                {{--<td>{{ $loop->iteration  }}</td>--}}
+                                {{--<td><a href="{{ $list->link }}" target="_blank" title="{{ $list->musicTitle }}"> {{ $list->musicTitle }}</a></td>--}}
+                                {{--<td>--}}
+                                {{--@foreach($list->singerMessage as $singerMessage)   --}}
+                                    {{--<a href="{{ $singerMessage->singerLink }}" target="_blank" title="{{ $singerMessage->singer }}">--}}
+                                        {{--{{$singerMessage->singer}}--}}
+                                        {{--@if($loop->remaining != 0) / @endif--}}
+                                    {{--</a>--}}
+                                {{--@endforeach                            --}}
+                                {{--</td>--}}
+                                {{--<td>--}}
+                                    {{--<a href="{{ $list->musicAlbumLink}}" target='_blank' title="{{ $list->musicAlbumTitle }}">--}}
+                                        {{--{{ $list->musicAlbumTitle }}--}}
+                                    {{--</a>--}}
+                                {{--</td>--}}
+                                {{--<td>{{ $list->totalComment }}</td>--}}
                                 {{--<td>--}}
                                     {{--<a href="{{ $list->link }}" target='_blank'>{{ $list->link }}</a>--}}
                                 {{--</td>--}}
-                            </tr>   
-                            @endforeach   
+                            {{--</tr>   --}}
+                            {{--@endforeach   --}}
                         </tbody>                                     
                     </table>
                 </div>
             </div> 
         </div>
-        @if($totalPageNum > 1)
-         <input id="pageUrl" type="hidden" data-url="{{ route('cloudMusicPage') }}" data-token="{{ csrf_token() }}" data-max="{{ $totalPageNum }}"/>
+        <input id="pageUrl" type="hidden" data-url="{{ route('cloudMusicPage') }}" data-token="{{ csrf_token() }}" />
         <div class='row'>
             <div class='col-xs-12 col-md-offset-1'>
                 <nav aria-label="Page navigation">
@@ -86,18 +85,8 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                         </li>
-                        @for($i=1;$i <=  $totalPageNum;$i++)
-                            @if($i > 13)
-                                <li><a class="bypass" href="javascript:void(0);">...</a></li>
-                                <li><a class="page lastPage" href="javascript:void(0);">{{ $totalPageNum }}</a></li>
-                                @break;
-                            @elseif($i==1)
-                                <li class="active"><a class="page firstPage" href="javascript:void(0);">{{ $i }}</a></li>
-                            @else
-                                <li><a class="page" href="javascript:void(0);">{{ $i }}</a></li>
-                            @endif
-                            
-                        @endfor 
+                            <li class="active"><a class="page firstPage" href="javascript:void(0);">1</a></li>
+                            <li><a class="page lastPage" href="javascript:void(0);">2</a></li>
                         <li>
                         <a class="next" href="javascript:void(0);" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
@@ -107,13 +96,13 @@
                 </nav>
             </div>
         </div>
-    </div>w
-    @endif
+    </div>
 @endsection
 
 @section('javascript')
     <script>
         $(function(){
+
             $('.search-menu').click(function(){
                 var name  = $(this).attr('data-name');
                 var title = $(this).text();
@@ -124,18 +113,12 @@
                 $('#auto-form').submit();
             });
             $('#auto-form').submit(function(){
-                var url         = $(this).attr('action');
-                var name        = $('#search-input').val();
-                console.log(name);
-                var token       = $('input[name="_token"]').eq(0).val();
-                var searchName  = $('#search-input').prop('name');
-                var data        = {name:name,'searchName':searchName,'_token':token};
-                reCratePage(url,data);
+                changePage(1);
                 return false;
             })
 
             //作为全局变量
-            var maxPageNum   = parseInt($('#pageUrl').attr('data-max'));
+            var maxPageNum   = 2;
             var pageShowNum  = 15;
             //跳转页数
             $(document).on('click','.page',function(){
@@ -144,10 +127,10 @@
                 if(pageNum == maxPageNum || pageNum == 1){
                     switch(pageNum){
                         case 1:
-                            recreatePage(1,1,'prev');
+                            recreatePage(1,'prev');
                             break;
                         case maxPageNum:
-                            recreatePage(pageNum,maxPageNum,'next');
+                            recreatePage(maxPageNum,'next');
                             break;
 
                     }
@@ -161,8 +144,9 @@
                 }else{
                     changeCurrentPosition($(this).parent());
                 }
-               
             });
+            //先绑定事件才能触发点击
+            $('.firstPage').click();
             //上一页
             $(document).on('click','.previous',function(){
                 var currentPageNum = parseInt($('.active a').text());
@@ -174,7 +158,7 @@
                //判断显示的页数是否需要重新生成
                 var nextObject = $('.active').prev();
                 if($('.active').prev().find('a').hasClass('bypass')){
-                    recreatePage(currentPageNum,previousPageNum,'prev');
+                    recreatePage(previousPageNum,'prev');
                     $.each($('.pagination li a'),function(k,v){
                         var nowPage = parseInt($(this).text());
                         if(nowPage == previousPageNum){
@@ -197,7 +181,7 @@
                 //判断显示到页数是否需要重新生成
                 var nextObject = $('.active').next();
                 if($('.active').next().find('a').hasClass('bypass') || $(this).text() == 15){
-                    recreatePage(currentPageNum,nextPageNum,'next');
+                    recreatePage(nextPageNum,'next');
                     $.each($('.pagination li a'),function(k,v){
                         var nowPage = parseInt($(this).text());
                         if(nowPage == nextPageNum){
@@ -208,9 +192,9 @@
                 changeCurrentPosition(nextObject);
             });
             //重新生成分页页数
-            function recreatePage(currentPageNum,nextPageNum,action){
+            function recreatePage(nextPageNum,action){
+                console.log(nextPageNum+'--'+action+'----');
                 //生成页数
-                console.log(nextPageNum+'-'+action);
                 $('.pagination').empty();
                 var pageArea = '<li><a class="previous" href="javascript:void(0);" aria-label="Previous">'
                             +'<span aria-hidden="true">&laquo;</span></a></li>';
@@ -260,7 +244,9 @@
                     pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
                                        
                 }
-                pageArea += '<li><a class="page lastPage" href="javascript:void(0);">'+ maxPageNum +'</a></li>';
+                if(maxPageNum > 1) {
+                    pageArea += '<li><a class="page lastPage" href="javascript:void(0);">' + maxPageNum + '</a></li>';
+                }
                 pageArea += '<li><a class="next" href="javascript:void(0);" aria-label="Next">'
                              +'<span aria-hidden="true">&raquo;</span></a></li>';
                  $('.pagination').append(pageArea);
@@ -269,19 +255,22 @@
             function changeCurrentPosition($obj){
                 $('.active').removeClass('active');
                 $obj.addClass('active');
+                $obj.addClass('disabled');
             }
             //根据页数改变显示的内容
             function changePage(pageNum){
-                var url = $('#pageUrl').attr('data-url');
-                var token = $('#pageUrl').attr('data-token');
-                var data   = {'pageNum':pageNum,'_token':token};
+                var url         = $('#pageUrl').attr('data-url');
+                var name        = $('#search-input').val();
+                var searchName  = $('#search-input').prop('name');
+                var token       = $('#pageUrl').attr('data-token');
+                var data        = {'pageNum':pageNum,name:name,'searchName':searchName,'_token':token};
                 reCratePage(url,data);
             }
             //重新生成界面
             function reCratePage(url,data){
                 $.post(url,data,function(data){
                     $('.table tbody').empty();
-                    $.each(data,function(key,value){
+                    $.each(data.musicList,function(key,value){
                         var tr                  = $('<tr></tr>');
                         var keyArea             = '<td>'+ (key+1) +'</td>';
                         var musicTitleArea      = '<td><a href="'+ value.link +'" target="_blank" title="'+ value.musicTitle +'">'+ value.musicTitle +'</a></td>';
@@ -301,9 +290,15 @@
                         });
                         tr.append(keyArea+musicTitleArea+singleArea+musicAlbumTitleArea+commentArea);
                         $('.table tbody').append(tr);
+                        //判断是否要重新生成页数
+                        if(data.totalPageNum != maxPageNum){
+                            maxPageNum = data.totalPageNum;
+                            recreatePage(1,'prev');
+                        }
                     })
                 },'json');
             }
         })
+
     </script>
 @endsection
