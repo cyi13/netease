@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="row search-field">
-                <div class="col-xs-3 col-md-offset-1">
+                <div class="col-xs-2 col-md-offset-1">
                     <from id="auto-form" name="form" action="{{ route('cloudMusicPage') }}">
                         <div class="input-group">
                             <div class="input-group-btn">
@@ -21,12 +21,12 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a class="search-menu" href="javascript:void(0);" data-name="musicTitle">歌曲名</a></li>
-                                    <li><a class="search-menu" href="javascript:void(0);" data-name="singer">歌手</a></li>
+                                    <li><a class="search-menu" href="javascript:void(0);" data-name="singerMessage">歌手</a></li>
                                 </ul>
                             </div>
                              <input type="text" name="musicTitle" id="search-input" class="form-control" aria-describedby="sizing-addon1">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" id="submit-button" type="submit"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" id="submit-button" type="submit" style="width: 100%;height: 100%"><i class="fa fa-search"></i></button>
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                             </span>
                         </div>
@@ -86,7 +86,7 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                         </li>
-                        @for($i=1;$i <  $totalPageNum;$i++)
+                        @for($i=1;$i <=  $totalPageNum;$i++)
                             @if($i > 13)
                                 <li><a class="bypass" href="javascript:void(0);">...</a></li>
                                 <li><a class="page lastPage" href="javascript:void(0);">{{ $totalPageNum }}</a></li>
@@ -126,6 +126,7 @@
             $('#auto-form').submit(function(){
                 var url         = $(this).attr('action');
                 var name        = $('#search-input').val();
+                console.log(name);
                 var token       = $('input[name="_token"]').eq(0).val();
                 var searchName  = $('#search-input').prop('name');
                 var data        = {name:name,'searchName':searchName,'_token':token};
@@ -197,7 +198,6 @@
                 var nextObject = $('.active').next();
                 if($('.active').next().find('a').hasClass('bypass') || $(this).text() == 15){
                     recreatePage(currentPageNum,nextPageNum,'next');
-                    
                     $.each($('.pagination li a'),function(k,v){
                         var nowPage = parseInt($(this).text());
                         if(nowPage == nextPageNum){
@@ -210,7 +210,7 @@
             //重新生成分页页数
             function recreatePage(currentPageNum,nextPageNum,action){
                 //生成页数
-
+                console.log(nextPageNum+'-'+action);
                 $('.pagination').empty();
                 var pageArea = '<li><a class="previous" href="javascript:void(0);" aria-label="Previous">'
                             +'<span aria-hidden="true">&laquo;</span></a></li>';
@@ -218,19 +218,32 @@
                 pageArea += '<li><a class="page firstPage" href="javascript:void(0);">1</a></li>';
                 var remainPageNum = pageShowNum-2;
                 if(nextPageNum <= remainPageNum && action == 'prev'){
-                    for(var i=2;i<=remainPageNum;i++){
-                        pageArea += '<li><a class="page" href="javascript:void(0);">'+ i +'</a></li>';
-                    }    
-                    pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
+                    if(maxPageNum > remainPageNum){
+                        for(var i=2;i<=remainPageNum;i++){
+                            pageArea += '<li><a class="page" href="javascript:void(0);">'+ i +'</a></li>';
+                        }
+                        pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
+                    }else{
+                        //如果总页数小于指定的页数 并且是点击第一页
+                        for(var i=2;i<maxPageNum;i++){
+                            pageArea += '<li><a class="page" href="javascript:void(0);">'+ i +'</a></li>';
+                        }
+                    }
                 }else if(nextPageNum >= maxPageNum-remainPageNum){
-                    pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
-                    for(var i=maxPageNum-remainPageNum+1;i<maxPageNum;i++){
-                        pageArea += '<li><a class="page" href="javascript:void(0);">'+ i +'</a></li>';
-                    }                     
+                    if(maxPageNum-remainPageNum >= 0){
+                        pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
+                        for(var i=maxPageNum-remainPageNum+1;i<maxPageNum;i++){
+                            pageArea += '<li><a class="page" href="javascript:void(0);">'+ i +'</a></li>';
+                        }
+                    }else {
+                        //如果总页数小于指定的页数 并且是点击最后一页
+                        for(var i=2;i<maxPageNum;i++){
+                            pageArea += '<li><a class="page" href="javascript:void(0);">'+ i +'</a></li>';
+                        }
+                    }
                 }else{
                     remainPageNum -= 2;
                     pageArea += '<li><a class="bypass" href="javascript:void(0);">...</a></li>';
-
                     switch(action){
                         case 'prev':
                             var startPageNum = nextPageNum-remainPageNum;

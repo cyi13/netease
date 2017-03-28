@@ -9,10 +9,9 @@ class CloudMusicMessage extends Common
 	protected $guarded    = array();
 
 	public function getMusicListMessage($offset=0,array $where=array(),$limit=15){
-		if(empty($where)){
-			$list = $this->orderBy('totalComment','desc')->offset($offset)->limit($limit)->get();
-			return $list;
-		}
+
+      $list = $this->where($where)->orderBy('totalComment','desc')->offset($offset)->limit($limit)->get();
+      return $list;
 	}
 
 	public function getTotalCount(array $where=array()){
