@@ -38,11 +38,16 @@ class CrawlersMessageRepository extends Common Implements CrawlersMessageInterfa
     * 分页数据渲染
     */
     public function page($model,$where=array()){
-        $totalCount = $model->getTotalCount($where);
-        if($totalCount){
-            $totalPageNum = ceil($totalCount/$this->limit);
-        }
+        $totalCount   = $model->getTotalCount($where);
+        $totalPageNum = $totalCount ? ceil($totalCount/$this->limit) : 0;
         return $totalPageNum;
     }
-    
+
+    /**
+     * 获得抓取过的id数量
+     */
+    public function getTotalMusciIdCount(){
+        return $this->getModel('CloudMusicMessage')->totalMusciIdCount();
+    }
+
 }

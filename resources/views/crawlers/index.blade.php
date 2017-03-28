@@ -32,6 +32,9 @@
                         </div>
                     </from>
                 </div>
+                <div class="col-xs-1 col-md-offset-5">
+                    <span>{{ $totalMusciIdCount }}</span>
+                </div>
             </div>
             <div class='row table-field'>
                 <div class='col-xs-12 col-md-offset-1'>
@@ -102,7 +105,6 @@
 @section('javascript')
     <script>
         $(function(){
-
             $('.search-menu').click(function(){
                 var name  = $(this).attr('data-name');
                 var title = $(this).text();
@@ -116,7 +118,6 @@
                 changePage(1);
                 return false;
             })
-
             //作为全局变量
             var maxPageNum   = 2;
             var pageShowNum  = 15;
@@ -127,20 +128,20 @@
                 if(pageNum == maxPageNum || pageNum == 1){
                     switch(pageNum){
                         case 1:
-                            recreatePage(1,'prev');
+                            reCreatePage(1,'prev');
                             break;
                         case maxPageNum:
-                            recreatePage(maxPageNum,'next');
+                            reCreatePage(maxPageNum,'next');
                             break;
 
                     }
                     $.each($('.pagination li a'),function(k,v){
                         var nowPage = parseInt($(this).text());
                         if(nowPage == pageNum){
-                            nextObject = $(this).parent();
+                            var nextObject = $(this).parent();
+                            changeCurrentPosition(nextObject);
                         }
                     });
-                    changeCurrentPosition(nextObject);
                 }else{
                     changeCurrentPosition($(this).parent());
                 }
@@ -158,7 +159,7 @@
                //判断显示的页数是否需要重新生成
                 var nextObject = $('.active').prev();
                 if($('.active').prev().find('a').hasClass('bypass')){
-                    recreatePage(previousPageNum,'prev');
+                    reCreatePage(previousPageNum,'prev');
                     $.each($('.pagination li a'),function(k,v){
                         var nowPage = parseInt($(this).text());
                         if(nowPage == previousPageNum){
@@ -181,7 +182,7 @@
                 //判断显示到页数是否需要重新生成
                 var nextObject = $('.active').next();
                 if($('.active').next().find('a').hasClass('bypass') || $(this).text() == 15){
-                    recreatePage(nextPageNum,'next');
+                    reCreatePage(nextPageNum,'next');
                     $.each($('.pagination li a'),function(k,v){
                         var nowPage = parseInt($(this).text());
                         if(nowPage == nextPageNum){
@@ -192,8 +193,7 @@
                 changeCurrentPosition(nextObject);
             });
             //重新生成分页页数
-            function recreatePage(nextPageNum,action){
-                console.log(nextPageNum+'--'+action+'----');
+            function reCreatePage(nextPageNum,action){
                 //生成页数
                 $('.pagination').empty();
                 var pageArea = '<li><a class="previous" href="javascript:void(0);" aria-label="Previous">'
@@ -255,7 +255,6 @@
             function changeCurrentPosition($obj){
                 $('.active').removeClass('active');
                 $obj.addClass('active');
-                $obj.addClass('disabled');
             }
             //根据页数改变显示的内容
             function changePage(pageNum){
@@ -264,21 +263,19 @@
                 var searchName  = $('#search-input').prop('name');
                 var token       = $('#pageUrl').attr('data-token');
                 var data        = {'pageNum':pageNum,name:name,'searchName':searchName,'_token':token};
-                reCratePage(url,data);
+                reLoadPage(url,data);
             }
             //重新生成界面
-            function reCratePage(url,data){
+            function reLoadPage(url,data){
                 $.post(url,data,function(data){
                     $('.table tbody').empty();
                     $.each(data.musicList,function(key,value){
                         var tr                  = $('<tr></tr>');
                         var keyArea             = '<td>'+ (key+1) +'</td>';
                         var musicTitleArea      = '<td><a href="'+ value.link +'" target="_blank" title="'+ value.musicTitle +'">'+ value.musicTitle +'</a></td>';
-//                        var musicTitleArea      = '<td>'+ value.musicTitle +'</td>';
                         var musicAlbumTitleArea = '<td><a href="'+ value.musicAlbumLink +'" target="_blank"'
                             +'title="'+ value.musicAlbumTitle +'">'+ value.musicAlbumTitle + '</td>';
                         var commentArea         = '<td>'+ value.totalComment +'</td>';
-                                {{--<td><a href="{{ $list->link }}" target="_blank" title="{{ $list->musicTitle }}"> {{ $list->musicTitle }}</a></td>--}}
                         var singleArea          = '<td>';
                         var length              = value.singerMessage.length;
                         $.each(value.singerMessage,function(k,v){
@@ -293,7 +290,7 @@
                         //判断是否要重新生成页数
                         if(data.totalPageNum != maxPageNum){
                             maxPageNum = data.totalPageNum;
-                            recreatePage(1,'prev');
+                            reCreatePage(1,'prev');
                         }
                     })
                 },'json');

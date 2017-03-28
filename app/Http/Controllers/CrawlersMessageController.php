@@ -18,7 +18,8 @@ class CrawlersMessageController extends CommonController{
     }
 
     public function getCloudMusicMessage(){
-        return view('crawlers/index');
+        $totalMusciIdCount = $this->crawlerMsg->getTotalMusciIdCount();
+        return view('crawlers/index',array('totalMusciIdCount'=>$totalMusciIdCount));
     }
 
     public function getCloudMusicMessagePage(Request $request){

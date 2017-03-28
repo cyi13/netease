@@ -24,4 +24,9 @@ class CloudMusicMessage extends Common
 //		}
 		return $totalCount;
 	}
+
+	public function totalMusciIdCount(){
+        $totalMusciIdCount = \DB::table('cloud_music_id_list')->count();
+        return $totalMusciIdCount;
+    }
 }
