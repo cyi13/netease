@@ -398,11 +398,11 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                         $musicMessagePage   = $this->CloudMusicApi->musicMessage($musicId);
                         //匹配歌曲信息
                         $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
-                        if(!empty($musicMessageArray)){
+                        if(!empty($musicMessageArray) & is_array($musicMessageArray)){
                             //歌唱者有可能会有多个合唱 进一步处理
                             $singerString       = $musicMessageArray[1][0];
                             $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
-                            if(!empty($singerMessageArray[1])){
+                            if(!empty($singerMessageArray[1]) & is_array($singerMessageArray[1])){
                                 //歌手有多个 存为一个JSON
                                 foreach ($singerMessageArray[1] as $key=>$singerName){
                                     $array[$key]['singer']      = $singerName;
