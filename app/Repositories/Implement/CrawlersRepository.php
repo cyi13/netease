@@ -384,26 +384,24 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $musicMsg         = array();
         if(!empty($musicIdArray)){
             foreach ($musicIdArray as $musicId) {
-                //抓取总评论数
-                $musicCommentMsg = $this->CloudMusicApi->musicCommentMsg($musicId);
+                //抓取总评论数 获得的数据为一个json格式的字符串解析成数组
+                $musicCommentMsg = json_decode($this->CloudMusicApi->musicCommentMsg($musicId),true);
                 $this->log('musicId:'.$musicId);
-                if(!empty($musicCommentMsg)){
-                    //获得的数据为一个json格式的字符串
-                    $commentArray       = json_decode($musicCommentMsg);
+                if(!empty($musicCommentMsg) & is_array($musicCommentMsg)){
                     //只要评论数大于10000的$keyPrefix
                     // $this->log(json_encode($commentArray));
-                    $totalCommnetNum    = $commentArray->total;
+                    $totalCommnetNum    = $musicCommentMsg['total'];
                     if(intval($totalCommnetNum) > 10000){
                         $this->log('find one');
                         //抓取歌曲信息
                         $musicMessagePage   = $this->CloudMusicApi->musicMessage($musicId);
                         //匹配歌曲信息
                         $musicMessageArray  = $this->pregMathAll($musicMessageRule,$musicMessagePage);
-                        if(!empty($musicMessageArray)){
+                        if(!empty($musicMessageArray) & is_array($musicMessageArray)){
                             //歌唱者有可能会有多个合唱 进一步处理
                             $singerString       = $musicMessageArray[1][0];
                             $singerMessageArray = $this->pregMathAll($singerRule,$singerString);
-                            if(!empty($singerMessageArray[1])){
+                            if(!empty($singerMessageArray[1]) & is_array($singerMessageArray[1])){
                                 //歌手有多个 存为一个JSON
                                 foreach ($singerMessageArray[1] as $key=>$singerName){
                                     $array[$key]['singer']      = $singerName;
@@ -411,7 +409,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                                 }
                                 $musicMsg[$musicId]['musicId']            = $musicId;
                                 $musicMsg[$musicId]['link']               = $musicLinkDomain.$musicId;
-                                $musicMsg[$musicId]['singerMessage']      = json_encode($array);
+                                $musicMsg[$musicId]['singerMessage']      = json_encode($array,JSON_UNESCAPED_UNICODE);
                                 //歌曲名
                                 $musicMsg[$musicId]['musicTitle']         = $musicMessageArray[0][0];
                                 //歌曲所属专辑链接
@@ -431,7 +429,7 @@ class CrawlersRepository extends Common implements CrawlersInterface{
                 }else{
                     $this->Redis->lpush('emptyMusicMessageId',$musicId);
                 }
-                usleep(200000);
+                usleep(50000);
             }      
             //抓取过到放入到临时表中
             $this->putMusicIdIntoDb($musicIdArray);

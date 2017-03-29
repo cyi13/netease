@@ -29,24 +29,33 @@ class CrawlersMessageRepository extends Common Implements CrawlersMessageInterfa
                 $value->singerMessage = json_decode($value->singerMessage);
             }
         }
-        $this->page($MusicModel,$where);
-        return $list;
+        $totalCount = $this->page($MusicModel,$where);
+        $array['musicList']  = $list;
+        $array['totalPageNum'] = $totalCount;
+        return $array;
     }
     
     /**
     * 分页数据渲染
     */
     public function page($model,$where=array()){
-        $totalCount = $model->getTotalCount($where);
-        if($totalCount){
-            $totalPageNum = ceil($totalCount/$this->limit);
-            view()->share('totalPageNum',$totalPageNum);
-        }
+        $totalCount   = $model->getTotalCount($where);
+        $totalPageNum = $totalCount ? ceil($totalCount/$this->limit) : 0;
+        return $totalPageNum;
     }
+
 
     public function testProxy(){
         $Proxy = new Proxy();
         $Proxy->getFastProxyList();
     }
     
+
+    /**
+     * 获得抓取过的id数量
+     */
+    public function getTotalMusciIdCount(){
+        return $this->getModel('CloudMusicMessage')->totalMusciIdCount();
+    }
+
 }
