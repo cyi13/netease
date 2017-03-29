@@ -383,15 +383,13 @@ class CrawlersRepository extends Common implements CrawlersInterface{
         $musicMsg         = array();
         if(!empty($musicIdArray)){
             foreach ($musicIdArray as $musicId) {
-                //抓取总评论数
-                $musicCommentMsg = $this->CloudMusicApi->musicCommentMsg($musicId);
+                //抓取总评论数 获得的数据为一个json格式的字符串解析成数组
+                $musicCommentMsg = json_decode($this->CloudMusicApi->musicCommentMsg($musicId),true);
                 $this->log('musicId:'.$musicId);
-                if(!empty($musicCommentMsg)){
-                    //获得的数据为一个json格式的字符串
-                    $commentArray       = json_decode($musicCommentMsg);
+                if(!empty($musicCommentMsg) & is_array($musicCommentMsg)){
                     //只要评论数大于10000的$keyPrefix
                     // $this->log(json_encode($commentArray));
-                    $totalCommnetNum    = $commentArray->total;
+                    $totalCommnetNum    = $musicCommentMsg['total'];
                     if(intval($totalCommnetNum) > 10000){
                         $this->log('find one');
                         //抓取歌曲信息
