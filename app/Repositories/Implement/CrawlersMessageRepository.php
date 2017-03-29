@@ -44,13 +44,6 @@ class CrawlersMessageRepository extends Common Implements CrawlersMessageInterfa
         return $totalPageNum;
     }
 
-
-    public function testProxy(){
-        $Proxy = new Proxy();
-        $Proxy->getFastProxyList();
-    }
-    
-
     /**
      * 获得抓取过的id数量
      */
