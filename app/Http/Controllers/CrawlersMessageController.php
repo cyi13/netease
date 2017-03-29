@@ -18,6 +18,7 @@ class CrawlersMessageController extends CommonController{
     }
 
     public function getCloudMusicMessage(){
+        $this->crawlerMsg->testProxy();die;
         //获取歌曲列表
         $list     = $this->crawlerMsg->getMusicListMessage();
         $viewData['musicList'] = $list;

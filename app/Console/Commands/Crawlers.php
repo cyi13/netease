@@ -54,6 +54,9 @@ class Crawlers extends Command
                 case 'put':
                     $this->crawler->putPlayListIntoMysqlFromRedis();
                     break;
+                case 'proxyCheck':
+                    $this->crawler->checkProxy();
+                    break;
             }
         }
     }

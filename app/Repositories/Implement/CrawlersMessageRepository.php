@@ -3,6 +3,7 @@
 namespace App\Repositories\Implement;
 use App\Repositories\Common\Common;
 use App\Repositories\Interfaces\CrawlersMessageInterface;
+use App\Repositories\Common\Proxy;
 
 class CrawlersMessageRepository extends Common Implements CrawlersMessageInterface{
     
@@ -41,6 +42,11 @@ class CrawlersMessageRepository extends Common Implements CrawlersMessageInterfa
             $totalPageNum = ceil($totalCount/$this->limit);
             view()->share('totalPageNum',$totalPageNum);
         }
+    }
+
+    public function testProxy(){
+        $Proxy = new Proxy();
+        $Proxy->getFastProxyList();
     }
     
 }

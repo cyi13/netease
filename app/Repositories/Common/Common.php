@@ -46,7 +46,7 @@ class Common {
      * @param interge $timeout  超时时间
      * @return array
      */
-    protected function sendCurl($url=null,$postData=array(),$postType='GET',$header=array(),$timeout=10){
+    protected function sendCurl($url=null,$postData=array(),$postType='GET',$header=array(),$timeout=20,$proxy = array(),$gzip){
 
         if(empty($url)) {
             return 'url is empty';
@@ -67,6 +67,16 @@ class Common {
         //头部信息
         if(!empty($header)){
             curl_setopt($ch,CURLOPT_HTTPHEADER, $header);
+        }
+        //使用代理
+        if(!empty($proxy)){
+            if(array_key_exists('proxy',$proxy) & array_key_exists('proxyPort',$proxy)){
+                curl_setopt($ch,CURLOPT_PROXY,$proxy['proxy']);
+                curl_setopt($ch,CURLOPT_PROXYPORT,$proxy['proxyPort']);
+            }
+        }
+        if($gzip){
+            curl_setopt($ch, CURLOPT_ENCODING, "");
         }
         //请求的地址
         curl_setopt($ch,CURLOPT_URL,$url);
@@ -200,12 +210,12 @@ class Common {
     protected function Redis(){
 
         if(empty($this->Redis)){
-            $this->Redis = new \redis();
+            $this->Redis = new RedisDb();
             //redis配置信息
             $redisConfig = config('database.redis');
             $host = $redisConfig['default']['host'];
             $port = $redisConfig['default']['port'];
-            $this->Redis->Connect($host,$port);
+//            $this->Redis->Connect($host,$port);
         }
         return $this->Redis;
     }

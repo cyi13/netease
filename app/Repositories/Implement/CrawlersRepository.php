@@ -6,6 +6,7 @@ use App\Repositories\Common\Common;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Common\Math_BigInteger;
 use App\Repositories\Common\CloudMusicApi;
+use App\Repositories\Common\Proxy;
 /**
  * 数据收集
  *
@@ -529,5 +530,10 @@ class CrawlersRepository extends Common implements CrawlersInterface{
             $musicMsg  = $this->Redis->hgetall($keyPrefix.$i);
             $res       = $Model->insert($musicMsg);
         }
+    }
+
+    public function checkProxy(){
+        $Proxy = new Proxy();
+        $Proxy->getProxyList();
     }
 }
