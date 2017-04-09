@@ -38,7 +38,7 @@ class Crawlers extends Command
      */
     public function handle()
     {
-        if($this->confirm('do you want to start collect now ?')){
+//        if($this->confirm('do you want to start collect now ?')){
 
             $collectType = $this->argument('type');
             switch ($collectType) {
@@ -56,6 +56,6 @@ class Crawlers extends Command
                     $this->crawler->checkProxy();
                     break;
             }
-        }
+//        }
     }
 }

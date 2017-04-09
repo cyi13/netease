@@ -3,7 +3,6 @@
 namespace App\Repositories\Implement;
 use App\Repositories\Common\Common;
 use App\Repositories\Interfaces\CrawlersMessageInterface;
-use App\Repositories\Common\Proxy;
 
 class CrawlersMessageRepository extends Common Implements CrawlersMessageInterface{
     

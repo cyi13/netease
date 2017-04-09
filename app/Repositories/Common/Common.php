@@ -212,12 +212,12 @@ class Common {
     protected function Redis(){
 
         if(empty($this->Redis)){
-            $this->Redis = new RedisDb();
+            $this->Redis = new \redis();
             //redis配置信息
             $redisConfig = config('database.redis');
             $host = $redisConfig['default']['host'];
             $port = $redisConfig['default']['port'];
-//            $this->Redis->Connect($host,$port);
+            $this->Redis->Connect($host,$port);
         }
         return $this->Redis;
     }
