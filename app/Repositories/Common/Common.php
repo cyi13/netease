@@ -46,7 +46,7 @@ class Common {
      * @param interge $timeout  超时时间
      * @return array
      */
-    protected function sendCurl($url=null,$postData=array(),$postType='GET',$header=array(),$timeout=20,$proxy = array(),$gzip){
+    protected function sendCurl($url=null,$postData=array(),$postType='GET',$header=array(),$timeout=20,$proxy = array(),$gzip=0){
 
         if(empty($url)) {
             return 'url is empty';
@@ -90,6 +90,8 @@ class Common {
 
         //执行
         $result = curl_exec($ch);
+        //获取状态码
+//        $httpCode  = curl_getinfo($ch,CURLINFO_HTTP_CODE);
         //关闭
         curl_close($ch);
         //返回内容
