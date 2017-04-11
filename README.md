@@ -4,4 +4,6 @@
   ---------
   
     运行步骤：
+      . clone下来源码之后首先当然是按照laravel的安装方式按安装
+      . 建立一个名称为function的数据库,在根目录下运行php artisan migrate 来完成数据库迁移
   
